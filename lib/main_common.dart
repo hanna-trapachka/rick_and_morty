@@ -6,12 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:navigation/navigation.dart';
 
 import 'error_handler/provider/app_error_handler_provider.dart';
-  
 
 Future<void> mainCommon(Flavor flavor) async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  
+
   _setupDI(flavor);
 
   runApp(const App());
@@ -28,10 +27,9 @@ void _setupDI(Flavor flavor) {
     },
   );
 }
-  
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -58,5 +56,3 @@ class App extends StatelessWidget {
     );
   }
 }
-  
-  
