@@ -9,6 +9,7 @@ extension LocaleObserver on String {
     Map<String, String>? namedArgs,
     String? gender,
   }) {
+    // TODO(ann): is this required?
     context.locale;
     return this.tr(args: args, namedArgs: namedArgs, gender: gender);
   }

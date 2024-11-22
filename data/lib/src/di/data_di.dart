@@ -1,6 +1,8 @@
 import 'package:core/core.dart';
+import 'package:domain/domain.dart';
 
 import '../../data.dart';
+import '../repositories/character_repository_impl.dart';
 
 abstract class DataDI {
   static void initDependencies(GetIt locator) {
@@ -21,15 +23,21 @@ abstract class DataDI {
         eventNotifier: locator<AppEventNotifier>(),
       ),
     );
+  }
 
+  static void _initProviders(GetIt locator) {
     locator.registerLazySingleton<ApiProvider>(
-      () => ApiProvider(
-        locator<DioConfig>().dio,
-      ),
+      () => ApiProvider(locator<DioConfig>().dio),
+    );
+
+    locator.registerLazySingleton<CharacterProvider>(
+      () => CharacterProvider(locator<ApiProvider>()),
     );
   }
 
-  static void _initProviders(GetIt locator) {}
-
-  static void _initRepositories(GetIt locator) {}
+  static void _initRepositories(GetIt locator) {
+    locator.registerLazySingleton<CharacterRepository>(
+      () => CharacterRepositoryImpl(locator<CharacterProvider>()),
+    );
+  }
 }

@@ -1,5 +1,5 @@
 import 'character.dart';
-import 'character_list_info.dart';
+import 'character_list_pagination.dart';
 
 class CharacterListResponse {
   const CharacterListResponse({required this.info, required this.results});
