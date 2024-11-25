@@ -1,4 +1,4 @@
-part of 'app_buttom_cubit.dart';
+part of 'app_button_cubit.dart';
 
 @immutable
 abstract class AppButtonState {}
