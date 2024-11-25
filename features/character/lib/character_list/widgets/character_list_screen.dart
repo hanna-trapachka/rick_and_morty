@@ -28,26 +28,14 @@ class CharacterListScreen extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             }
             if (state.status.isError) {
-              return Container(
-                padding: const EdgeInsets.all(AppDimens.PADDING_16),
-                decoration: BoxDecoration(
-                  borderRadius:
-                      BorderRadius.circular(AppDimens.BORDER_RADIUS_20),
-                  color: context.colorScheme.errorContainer,
-                ),
-                child: Text(
-                  state.status.error!,
-                  style: context.textTheme.labelMedium!
-                      .copyWith(color: context.colorScheme.onError),
-                ),
-              );
+              return ErrorContainer(state.status.error!);
             }
             return InfiniteList(
               itemBuilder: (context, index) => CharacterListTile(
                 key: ValueKey(state.data[index].id),
                 state.data[index],
-                onPressed: () =>
-                    context.pushRoute(const CharacterDetailsRoute()),
+                onPressed: () => context
+                    .pushRoute(CharacterDetailsRoute(id: state.data[index].id)),
               ),
               itemsCount: state.data.length,
               loadMore: () => context

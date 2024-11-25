@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CharacterDetailsBloc
     extends Bloc<CharacterDetailsEvent, CharacterDetailsState> {
-  CharacterDetailsBloc(this._repo) : super(const CharacterDetailsLoading()) {
+  CharacterDetailsBloc(this._getCharacterUseCase)
+      : super(const CharacterDetailsLoading()) {
     on<CharacterDetailsEvent>(
       (event, emit) => switch (event) {
         final _CharacterDetailsFetched e => _fetch(e, emit),
@@ -12,7 +13,7 @@ class CharacterDetailsBloc
     );
   }
 
-  final CharacterRepository _repo;
+  final GetCharacterDetailsUseCase _getCharacterUseCase;
 
   Future<void> _fetch(
     _CharacterDetailsFetched event,
@@ -21,7 +22,7 @@ class CharacterDetailsBloc
     try {
       emit(const CharacterDetailsLoading());
 
-      final data = await _repo.getById(event.id);
+      final data = await _getCharacterUseCase.execute(event.id);
 
       emit(CharacterDetailsIdle(data));
     } on RestClientException catch (e) {

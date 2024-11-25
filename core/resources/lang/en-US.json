@@ -5,6 +5,7 @@
   "character": {
     "characters": "Characters",
     "last_location": "Last known location:",
-    "first_seeing_in": "First seeing in:"
+    "first_seeing_in": "First seeing in:",
+    "details": "Character Details"
   }
 }

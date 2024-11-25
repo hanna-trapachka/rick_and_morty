@@ -1,22 +1,67 @@
+import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/navigation.dart';
 
+import '../bloc/character_details_bloc.dart';
+
 @RoutePage()
 class CharacterDetailsScreen extends StatelessWidget {
-  const CharacterDetailsScreen({super.key});
+  const CharacterDetailsScreen({required this.id, super.key});
+
+  final int id;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: AppIconButton(
-          onPressed: context.maybePop,
-          child: const Icon(Icons.arrow_back),
+    return BlocProvider(
+      create: (context) =>
+          CharacterDetailsBloc(appLocator.get<GetCharacterDetailsUseCase>())
+            ..add(CharacterDetailsEvent.fetch(id)),
+      child: Scaffold(
+        appBar: AppBar(
+          leading: AppIconButton(
+            onPressed: context.maybePop,
+            child: const Icon(Icons.arrow_back),
+          ),
+          title: Text(LocaleKeys.character_details.tr()),
         ),
-        title: const Text('Title'),
+        body: BlocBuilder<CharacterDetailsBloc, CharacterDetailsState>(
+          builder: (context, state) {
+            switch (state) {
+              case CharacterDetailsLoading():
+                return const Center(child: CircularProgressIndicator());
+              case CharacterDetailsError(:final error):
+                return ErrorContainer(error);
+              case CharacterDetailsIdle(:final character):
+                return ListView(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppDimens.PADDING_8,
+                      ),
+                      height: 250,
+                      decoration: BoxDecoration(
+                        color: context.colorScheme.secondaryContainer,
+                        image: DecorationImage(
+                          image: NetworkImage(character.image),
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      character.name,
+                      style: context.textTheme.displaySmall,
+                    ),
+                    const SizedBox(height: 8),
+                    const Text('Other details.....'),
+                  ],
+                );
+            }
+          },
+        ),
       ),
-      body: Container(),
     );
   }
 }
