@@ -5,36 +5,114 @@ import '../../core_ui.dart';
 const LightColors _appColors = LightColors();
 
 final ThemeData lightTheme = ThemeData.light().copyWith(
-  // appBarTheme: _getAppBarTheme(),
   scaffoldBackgroundColor: _appColors.white,
   textTheme: _getTextTheme(),
   inputDecorationTheme: _getInputDecorationTheme(),
-  primaryColor: _appColors.primaryBg,
-  colorScheme: ColorScheme.fromSwatch().copyWith(
-    secondary: _appColors.primaryBg,
-    primary: _appColors.primaryBg,
-  ),
+  primaryColor: _appColors.primary,
+  colorScheme: ColorScheme.fromSeed(seedColor: _appColors.primary),
 );
 
-TextTheme _getTextTheme() {
-  return TextTheme(
-    titleMedium: AppFonts.normal13,
-    bodyMedium: AppFonts.normal13,
-  ).apply(
-    bodyColor: _appColors.primaryBg,
-    displayColor: _appColors.primaryBg,
-  );
-}
+TextTheme _getTextTheme() => const TextTheme(
+      bodySmall: TextStyle(
+        fontFamily: 'TT-Commons',
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.normal,
+        fontSize: 14,
+        height: 1.28,
+      ),
+      bodyMedium: TextStyle(
+        fontFamily: 'TT-Commons',
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.normal,
+        fontSize: 16,
+        height: 1.25,
+      ),
+      bodyLarge: TextStyle(
+        fontFamily: 'TT-Commons',
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.normal,
+        fontSize: 18,
+        height: 1.22,
+      ),
+      labelSmall: TextStyle(
+        fontFamily: 'TT-Commons',
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w500,
+        fontSize: 16,
+        height: 1.25,
+      ),
+      labelMedium: TextStyle(
+        fontFamily: 'TT-Commons',
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w500,
+        fontSize: 18,
+        height: 1.33,
+      ),
+      labelLarge: TextStyle(
+        fontFamily: 'TT-Commons',
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w500,
+        fontSize: 24,
+        height: 1.25,
+      ),
+      headlineSmall: TextStyle(
+        fontFamily: 'TT-Commons',
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w600,
+        fontSize: 24,
+        height: 1.25,
+      ),
+      headlineMedium: TextStyle(
+        fontFamily: 'TT-Commons',
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w600,
+        fontSize: 28,
+        height: 1.28,
+      ),
+      headlineLarge: TextStyle(
+        fontFamily: 'TT-Commons',
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w600,
+        fontSize: 32,
+        height: 1.125,
+        letterSpacing: -.1,
+      ),
+      displaySmall: TextStyle(
+        fontFamily: 'TT-Commons',
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w600,
+        fontSize: 56,
+        height: 1,
+      ),
+      displayMedium: TextStyle(
+        fontFamily: 'TT-Commons',
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w600,
+        fontSize: 64,
+        height: 1,
+      ),
+      displayLarge: TextStyle(
+        fontFamily: 'TT-Commons',
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w600,
+        fontSize: 72,
+        height: 1.05556,
+        letterSpacing: -.1,
+      ),
+    ).apply(
+      bodyColor: const Color.fromARGB(255, 1, 24, 2),
+      displayColor: const Color.fromARGB(255, 1, 24, 2),
+    );
 
 InputDecorationTheme _getInputDecorationTheme() {
   return InputDecorationTheme(
-    hintStyle: AppFonts.normal13.copyWith(color: _appColors.primaryBg),
+    hintStyle: AppFonts.normal13.copyWith(color: _appColors.primary),
     border: OutlineInputBorder(
       borderRadius: const BorderRadius.all(
         Radius.circular(AppDimens.BORDER_RADIUS_12),
       ),
       borderSide: BorderSide(
-        color: _appColors.primaryBg,
+        color: _appColors.primary,
       ),
     ),
     focusedBorder: OutlineInputBorder(
@@ -42,7 +120,7 @@ InputDecorationTheme _getInputDecorationTheme() {
         Radius.circular(AppDimens.BORDER_RADIUS_12),
       ),
       borderSide: BorderSide(
-        color: _appColors.primaryBg,
+        color: _appColors.primary,
         width: 2,
       ),
     ),
@@ -51,10 +129,10 @@ InputDecorationTheme _getInputDecorationTheme() {
         Radius.circular(AppDimens.BORDER_RADIUS_6),
       ),
       borderSide: BorderSide(
-        color: _appColors.primaryBg,
+        color: _appColors.primary,
         width: 2,
       ),
     ),
-    labelStyle: AppFonts.normal13.copyWith(color: _appColors.primaryBg),
+    labelStyle: AppFonts.normal13.copyWith(color: _appColors.primary),
   );
 }

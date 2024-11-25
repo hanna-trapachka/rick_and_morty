@@ -1,5 +1,10 @@
 {
-  "common" : {
-    "example_key" : "Example Value"
+  "general" : {
+    "all" : "All"
+  },
+  "character": {
+    "characters": "Characters",
+    "last_location": "Last known location:",
+    "first_seeing_in": "First seeing in:"
   }
 }

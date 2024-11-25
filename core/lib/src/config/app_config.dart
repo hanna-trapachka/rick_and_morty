@@ -19,12 +19,12 @@ class AppConfig {
     String webSocketUrl;
     switch (flavor) {
       case Flavor.prod:
-        baseUrl = '';
+        baseUrl = 'https://rickandmortyapi.com/api';
         webSocketUrl = '';
         break;
 
       case Flavor.dev:
-        baseUrl = '';
+        baseUrl = 'https://rickandmortyapi.com/api';
         webSocketUrl = '';
         break;
     }

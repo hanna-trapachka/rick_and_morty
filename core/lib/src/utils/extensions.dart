@@ -9,8 +9,17 @@ extension LocaleObserver on String {
     Map<String, String>? namedArgs,
     String? gender,
   }) {
-    // TODO(ann): is this required?
     context.locale;
     return this.tr(args: args, namedArgs: namedArgs, gender: gender);
   }
+}
+
+extension ContextExtension on BuildContext {
+  ThemeData get theme => Theme.of(this);
+
+  TextTheme get textTheme => theme.textTheme;
+
+  ColorScheme get colorScheme => theme.colorScheme;
+
+  Brightness get brightness => theme.brightness;
 }
