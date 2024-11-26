@@ -13,8 +13,12 @@ dependencies:
     path: ../core
   core_ui:
     path: ../core_ui
+  dashboard:
+    path: ../features/dashboard
   character:
     path: ../features/character
+  settings:
+    path: ../features/settings
 
   auto_route: ^7.8.4
 

@@ -2,6 +2,10 @@
   "general" : {
     "all" : "All"
   },
+  "dashboard": {
+    "characters": "Characters",
+    "settings": "Settings"
+  },
   "character": {
     "characters": "Characters",
     "last_location": "Last known location:",

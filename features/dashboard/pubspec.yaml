@@ -1,5 +1,5 @@
-name: settings
-description: Settings feature
+name: dashboard
+description: Dashboard feature
 version: 0.0.1
 publish_to: none
 
@@ -19,6 +19,10 @@ dependencies:
     path: ../../core_ui
   navigation:
     path: ../../navigation
+  character:
+    path: ../character
+  settings:
+    path: ../settings
 
 dev_dependencies:
   flutter_test:
