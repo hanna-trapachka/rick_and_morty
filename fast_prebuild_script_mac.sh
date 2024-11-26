@@ -17,13 +17,19 @@ echo_styled() {
 
 flutter clean
 
+# Generate assets
+(
+    echo_styled "Generating assets" 33
+    dart run build_runner build --delete-conflicting-outputs
+)
+
 allDirs
 
 # Generate localization keys
 (
     cd "core" || exit
     echo_styled "Generating localization keys in core" 33
-dart run easy_localization:generate -f keys -o locale_keys.g.dart -O lib/src/localization/generated -S resources/lang
+    dart run easy_localization:generate -f keys -o locale_keys.g.dart -O lib/src/localization/generated -S resources/lang
 )
 
 # Generate data layer files

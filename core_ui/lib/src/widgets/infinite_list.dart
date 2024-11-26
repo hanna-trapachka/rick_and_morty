@@ -58,13 +58,7 @@ class _InfiniteListState extends State<InfiniteList> {
           vertical: AppDimens.PADDING_10,
         ),
         itemBuilder: (context, index) => index >= widget.itemsCount
-            ? const Center(
-                child: SizedBox(
-                  height: 24,
-                  width: 24,
-                  child: CircularProgressIndicator(),
-                ),
-              )
+            ? const Center(child: AppLoadingAnimation(size: 40))
             : widget.itemBuilder(context, index),
         separatorBuilder: (context, index) => const SizedBox(height: 12),
         itemCount:

@@ -25,7 +25,7 @@ class CharacterListScreen extends StatelessWidget {
         body: BlocBuilder<CharacterListBloc, CharacterListState>(
           builder: (context, state) {
             if (state.initial) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: AppLoadingAnimation());
             }
             if (state.status.isError) {
               return ErrorContainer(state.status.error!);

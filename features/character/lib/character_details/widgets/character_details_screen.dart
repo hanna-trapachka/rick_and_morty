@@ -30,7 +30,7 @@ class CharacterDetailsScreen extends StatelessWidget {
           builder: (context, state) {
             switch (state) {
               case CharacterDetailsLoading():
-                return const Center(child: CircularProgressIndicator());
+                return const Center(child: AppLoadingAnimation());
               case CharacterDetailsError(:final error):
                 return ErrorContainer(error);
               case CharacterDetailsIdle(:final character):

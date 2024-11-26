@@ -19,11 +19,21 @@ runGet() {
 
 flutter clean
 
+# Generate assets
+(
+    echo_styled "Generating assets" 33
+    dart run build_runner build --delete-conflicting-outputs
+)
+
 allDirs "runGet"
 
 # generate localization keys
 cd "core" || exit
 dart run easy_localization:generate -f keys -o locale_keys.g.dart -O lib/src/localization/generated -S resources/lang
+
+# generate assets
+cd "core_ui" || exit
+dart run build_runner build --delete-conflicting-outputs
 
 # generate data layer files
 cd "../data" || exit

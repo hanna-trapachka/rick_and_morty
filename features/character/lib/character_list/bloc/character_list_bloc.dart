@@ -20,6 +20,9 @@ class CharacterListBloc extends Bloc<CharacterListEvent, CharacterListState> {
     try {
       emit(state.copyWith(status: BlocStatusRecord.loading()));
 
+      // for testing purposes
+      await Future.delayed(const Duration(seconds: 2), () => null);
+
       final nextPage = state.page + 1;
       final data = await _getListUseCase.execute(Pagination(page: nextPage));
 
