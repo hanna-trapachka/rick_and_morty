@@ -6,7 +6,7 @@ class CharacterListTile extends StatelessWidget {
   const CharacterListTile(
     this.character, {
     this.onPressed,
-    this.height = 160,
+    this.height = 180,
     super.key,
   });
 
@@ -40,9 +40,25 @@ class CharacterListTile extends StatelessWidget {
                       style: context.textTheme.labelMedium,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 12),
-                    //status & species
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 2),
+                    Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: character.status.color,
+                          ),
+                          width: 6,
+                          height: 6,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${character.status.localize()} - ${character.species.localize()}',
+                          style: context.textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
                     Text(
                       LocaleKeys.character_last_location.tr(),
                       style: context.textTheme.bodySmall,
@@ -51,7 +67,7 @@ class CharacterListTile extends StatelessWidget {
                       character.location.name,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 12),
+                    const Spacer(),
                     Text(
                       LocaleKeys.character_first_seeing_in.tr(),
                       style: context.textTheme.bodySmall,

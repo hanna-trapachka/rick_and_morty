@@ -1,4 +1,4 @@
-import 'location.dart';
+import '../../../domain.dart';
 
 class Character {
   const Character({
@@ -13,8 +13,8 @@ class Character {
 
   final int id;
   final String name;
-  final String status;
-  final String species;
+  final CharacterStatus status;
+  final CharacterSpecies species;
   final Location location;
   final Location origin;
   final String image;

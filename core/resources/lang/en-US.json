@@ -6,6 +6,11 @@
     "characters": "Characters",
     "last_location": "Last known location:",
     "first_seeing_in": "First seeing in:",
-    "details": "Character Details"
+    "details": "Character Details",
+    "status_alive": "Alive",
+    "status_dead": "Dead",
+    "status_unknown": "Unknown",
+    "species_alien": "Alien",
+    "species_human": "Human"
   }
 }
