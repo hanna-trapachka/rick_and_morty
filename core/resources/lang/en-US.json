@@ -6,6 +6,10 @@
     "characters": "Characters",
     "settings": "Settings"
   },
+  "settings": {
+    "settings": "Settings",
+    "dark_mode": "Dark Mode"
+  },
   "character": {
     "characters": "Characters",
     "last_location": "Last known location:",

@@ -10,7 +10,7 @@ abstract class AppColors {
 
   Color get primary;
 
-  Color get white;
+  Color get backgroundColor;
 }
 
 class DarkColors extends LightColors {
@@ -24,5 +24,5 @@ class LightColors implements AppColors {
   Color get primary => Colors.lightGreen.shade400;
 
   @override
-  Color get white => const Color.fromRGBO(255, 255, 255, 1);
+  Color get backgroundColor => const Color.fromRGBO(255, 255, 255, 1);
 }

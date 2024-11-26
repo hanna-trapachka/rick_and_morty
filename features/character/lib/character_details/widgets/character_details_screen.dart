@@ -52,10 +52,15 @@ class CharacterDetailsScreen extends StatelessWidget {
                     const SizedBox(height: 8),
                     Text(
                       character.name,
-                      style: context.textTheme.displaySmall,
+                      style: context.textTheme.displaySmall!
+                          .copyWith(color: context.colorScheme.onSurface),
                     ),
                     const SizedBox(height: 8),
-                    const Text('Other details.....'),
+                    Text(
+                      'Other details.....',
+                      style: context.textTheme.bodyMedium!
+                          .copyWith(color: context.colorScheme.onSurface),
+                    ),
                   ],
                 );
             }

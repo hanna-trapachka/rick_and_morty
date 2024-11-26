@@ -37,7 +37,8 @@ class CharacterListTile extends StatelessWidget {
                   children: [
                     Text(
                       character.name,
-                      style: context.textTheme.labelMedium,
+                      style: context.textTheme.labelMedium!
+                          .copyWith(color: context.colorScheme.onSurface),
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 2),
@@ -54,27 +55,34 @@ class CharacterListTile extends StatelessWidget {
                         const SizedBox(width: 4),
                         Text(
                           '${character.status.localize()} - ${character.species.localize()}',
-                          style: context.textTheme.bodySmall,
+                          style: context.textTheme.bodySmall!
+                              .copyWith(color: context.colorScheme.onSurface),
                         ),
                       ],
                     ),
                     const Spacer(),
                     Text(
                       LocaleKeys.character_last_location.tr(),
-                      style: context.textTheme.bodySmall,
+                      style: context.textTheme.bodySmall!
+                          .copyWith(color: context.colorScheme.onSurface),
                     ),
                     Text(
                       character.location.name,
                       overflow: TextOverflow.ellipsis,
+                      style: context.textTheme.bodyMedium!
+                          .copyWith(color: context.colorScheme.onSurface),
                     ),
                     const Spacer(),
                     Text(
                       LocaleKeys.character_first_seeing_in.tr(),
-                      style: context.textTheme.bodySmall,
+                      style: context.textTheme.bodySmall!
+                          .copyWith(color: context.colorScheme.onSurface),
                     ),
                     Text(
                       character.origin.name,
                       overflow: TextOverflow.ellipsis,
+                      style: context.textTheme.bodyMedium!
+                          .copyWith(color: context.colorScheme.onSurface),
                     ),
                   ],
                 ),

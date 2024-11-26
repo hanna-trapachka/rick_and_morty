@@ -5,11 +5,15 @@ import '../../core_ui.dart';
 const LightColors _appColors = LightColors();
 
 final ThemeData lightTheme = ThemeData.light().copyWith(
-  scaffoldBackgroundColor: _appColors.white,
+  brightness: Brightness.light,
   textTheme: _getTextTheme(),
-  inputDecorationTheme: _getInputDecorationTheme(),
-  primaryColor: _appColors.primary,
-  colorScheme: ColorScheme.fromSeed(seedColor: _appColors.primary),
+  colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightGreen.shade400),
+);
+
+final ThemeData darkTheme = ThemeData.dark().copyWith(
+  brightness: Brightness.dark,
+  textTheme: _getTextTheme(),
+  colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple.shade900),
 );
 
 TextTheme _getTextTheme() => const TextTheme(
@@ -99,14 +103,11 @@ TextTheme _getTextTheme() => const TextTheme(
         height: 1.05556,
         letterSpacing: -.1,
       ),
-    ).apply(
-      bodyColor: const Color.fromARGB(255, 1, 24, 2),
-      displayColor: const Color.fromARGB(255, 1, 24, 2),
     );
 
 InputDecorationTheme _getInputDecorationTheme() {
   return InputDecorationTheme(
-    hintStyle: AppFonts.normal13.copyWith(color: _appColors.primary),
+    // hintStyle: AppFonts.normal13.copyWith(color: _appColors.primary),
     border: OutlineInputBorder(
       borderRadius: const BorderRadius.all(
         Radius.circular(AppDimens.BORDER_RADIUS_12),
@@ -133,6 +134,6 @@ InputDecorationTheme _getInputDecorationTheme() {
         width: 2,
       ),
     ),
-    labelStyle: AppFonts.normal13.copyWith(color: _appColors.primary),
+    // labelStyle: AppFonts.normal13.copyWith(color: _appColors.primary),
   );
 }

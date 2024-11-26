@@ -41,14 +41,25 @@ class App extends StatelessWidget {
       fallbackLocale: AppLocalization.fallbackLocale,
       child: Builder(
         builder: (BuildContext context) {
-          return AppErrorHandlerProvider(
-            child: MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              routerConfig: appRouter.config(),
-              localizationsDelegates: context.localizationDelegates,
-              supportedLocales: context.supportedLocales,
-              locale: context.locale,
-              theme: lightTheme,
+          return BlocProvider(
+            create: (context) => ThemeBloc(),
+            child: BlocBuilder<ThemeBloc, Brightness>(
+              builder: (context, state) {
+                return AppErrorHandlerProvider(
+                  child: MaterialApp.router(
+                    debugShowCheckedModeBanner: false,
+                    routerConfig: appRouter.config(),
+                    localizationsDelegates: context.localizationDelegates,
+                    supportedLocales: context.supportedLocales,
+                    locale: context.locale,
+                    theme: lightTheme,
+                    darkTheme: darkTheme,
+                    themeMode: state == Brightness.light
+                        ? ThemeMode.light
+                        : ThemeMode.dark,
+                  ),
+                );
+              },
             ),
           );
         },
