@@ -1,6 +1,8 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
 import '../../core_ui.dart';
+import 'retry_error_widget.dart';
 
 class InfiniteList extends StatefulWidget {
   const InfiniteList({
@@ -9,6 +11,7 @@ class InfiniteList extends StatefulWidget {
     this.loadMore,
     this.isLoading = true,
     this.hasReachedMax = false,
+    this.error,
   });
 
   final int itemsCount;
@@ -16,6 +19,7 @@ class InfiniteList extends StatefulWidget {
   final VoidCallback? loadMore;
   final bool isLoading;
   final bool hasReachedMax;
+  final String? error;
 
   @override
   State<InfiniteList> createState() => _InfiniteListState();
@@ -58,11 +62,59 @@ class _InfiniteListState extends State<InfiniteList> {
           vertical: AppDimens.PADDING_10,
         ),
         itemBuilder: (context, index) => index >= widget.itemsCount
-            ? const Center(child: AppLoadingAnimation(size: 40))
+            ? _ListFooterItem(
+                onRetryPressed: widget.loadMore,
+                error: widget.error,
+                isLoading: widget.isLoading,
+              )
             : widget.itemBuilder(context, index),
         separatorBuilder: (context, index) => const SizedBox(height: 12),
         itemCount:
             widget.hasReachedMax ? widget.itemsCount : widget.itemsCount + 1,
+      ),
+    );
+  }
+}
+
+class _ListFooterItem extends StatelessWidget {
+  const _ListFooterItem({
+    required this.isLoading,
+    this.onRetryPressed,
+    this.error,
+  });
+
+  final VoidCallback? onRetryPressed;
+  final String? error;
+  final bool isLoading;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 40),
+      child: BlocConsumer<ConnectivityBloc, ConnectivityState>(
+        listener: (context, state) => onRetryPressed?.call(),
+        listenWhen: (previous, current) =>
+            previous is ConnectivityFailure && current is ConnectivitySuccess,
+        builder: (context, state) {
+          if (isLoading) {
+            return const Center(child: AppLoadingAnimation(size: 40));
+          }
+          if (state is ConnectivityFailure) {
+            return Center(
+              child: RetryErrorWidget(
+                text: LocaleKeys.general_check_connectivity.tr(),
+                onTryAgainPressed: onRetryPressed,
+              ),
+            );
+          }
+          if (error != null) {
+            return Center(
+              child: RetryErrorWidget(onTryAgainPressed: onRetryPressed),
+            );
+          }
+
+          return const SizedBox.shrink();
+        },
       ),
     );
   }

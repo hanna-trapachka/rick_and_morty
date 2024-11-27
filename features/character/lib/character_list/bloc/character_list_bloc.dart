@@ -36,9 +36,19 @@ class CharacterListBloc extends Bloc<CharacterListEvent, CharacterListState> {
         ),
       );
     } on RestClientException catch (e) {
-      emit(state.copyWith(status: BlocStatusRecord.error(e.message)));
+      emit(
+        state.copyWith(
+          status: BlocStatusRecord.error(e.message),
+          initial: false,
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(status: BlocStatusRecord.error(e.toString())));
+      emit(
+        state.copyWith(
+          status: BlocStatusRecord.error(e.toString()),
+          initial: false,
+        ),
+      );
     }
   }
 }

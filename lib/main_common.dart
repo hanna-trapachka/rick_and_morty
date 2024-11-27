@@ -41,8 +41,11 @@ class App extends StatelessWidget {
       fallbackLocale: AppLocalization.fallbackLocale,
       child: Builder(
         builder: (BuildContext context) {
-          return BlocProvider(
-            create: (context) => ThemeBloc(),
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => ThemeBloc()),
+              BlocProvider(create: (context) => ConnectivityBloc()),
+            ],
             child: BlocBuilder<ThemeBloc, Brightness>(
               builder: (context, state) {
                 return AppErrorHandlerProvider(

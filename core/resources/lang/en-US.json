@@ -1,6 +1,9 @@
 {
   "general" : {
-    "all" : "All"
+    "all" : "All",
+    "check_connectivity": "Please check your internet connection and try again",
+    "something_went_wrong": "Something went wrong",
+    "try_again": "Try again"
   },
   "dashboard": {
     "characters": "Characters",

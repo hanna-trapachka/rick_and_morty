@@ -27,9 +27,7 @@ class CharacterListScreen extends StatelessWidget {
             if (state.initial) {
               return const Center(child: AppLoadingAnimation());
             }
-            if (state.status.isError) {
-              return ErrorContainer(state.status.error!);
-            }
+
             return InfiniteList(
               itemBuilder: (context, index) => CharacterListTile(
                 key: ValueKey(state.data[index].id),
@@ -43,6 +41,7 @@ class CharacterListScreen extends StatelessWidget {
                   .add(CharacterListEvent.fetch()),
               isLoading: state.status.isLoading,
               hasReachedMax: state.hasReachedMax,
+              error: state.status.isError ? state.status.error : null,
             );
           },
         ),
