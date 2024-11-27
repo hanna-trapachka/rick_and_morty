@@ -9,7 +9,8 @@ class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
     _connectivitySubscription = Connectivity()
         .onConnectivityChanged
         .listen((List<ConnectivityResult> result) {
-      final isConnected = result.contains(ConnectivityResult.none);
+      final isConnected = !result.contains(ConnectivityResult.none);
+      print("connectivity status - ${result}");
       add(_ConnectivityChanged(isConnected: isConnected));
     });
 
@@ -27,7 +28,7 @@ class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
     Emitter<ConnectivityState> emit,
   ) {
     if (event.isConnected) {
-      emit(ConnectivitySuccess(isConnected: event.isConnected));
+      emit(ConnectivitySuccess());
     } else {
       emit(ConnectivityFailure());
     }
@@ -49,14 +50,7 @@ abstract class ConnectivityState extends Equatable {
 
 class ConnectivityInitial extends ConnectivityState {}
 
-class ConnectivitySuccess extends ConnectivityState {
-  const ConnectivitySuccess({required this.isConnected});
-
-  final bool isConnected;
-
-  @override
-  List<Object> get props => [isConnected];
-}
+class ConnectivitySuccess extends ConnectivityState {}
 
 class ConnectivityFailure extends ConnectivityState {
   @override

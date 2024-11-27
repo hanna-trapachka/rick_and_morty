@@ -14,57 +14,59 @@ class CharacterDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          CharacterDetailsBloc(appLocator.get<GetCharacterDetailsUseCase>())
-            ..add(CharacterDetailsEvent.fetch(id)),
-      child: Scaffold(
-        appBar: AppBar(
-          leading: AppIconButton(
-            onPressed: context.maybePop,
-            child: const Icon(Icons.arrow_back),
+    return NoConnectionWrap(
+      child: BlocProvider(
+        create: (context) =>
+            CharacterDetailsBloc(appLocator.get<GetCharacterDetailsUseCase>())
+              ..add(CharacterDetailsEvent.fetch(id)),
+        child: Scaffold(
+          appBar: AppBar(
+            leading: AppIconButton(
+              onPressed: context.maybePop,
+              child: const Icon(Icons.arrow_back),
+            ),
+            title: Text(LocaleKeys.character_details.tr()),
           ),
-          title: Text(LocaleKeys.character_details.tr()),
-        ),
-        body: BlocBuilder<CharacterDetailsBloc, CharacterDetailsState>(
-          builder: (context, state) {
-            switch (state) {
-              case CharacterDetailsLoading():
-                return const Center(child: AppLoadingAnimation());
-              case CharacterDetailsError(:final error):
-                return ErrorContainer(error);
-              case CharacterDetailsIdle(:final character):
-                return ListView(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppDimens.PADDING_8,
-                      ),
-                      height: 250,
-                      decoration: BoxDecoration(
-                        color: context.colorScheme.secondaryContainer,
-                        image: DecorationImage(
-                          image: NetworkImage(character.image),
-                          fit: BoxFit.contain,
+          body: BlocBuilder<CharacterDetailsBloc, CharacterDetailsState>(
+            builder: (context, state) {
+              switch (state) {
+                case CharacterDetailsLoading():
+                  return const Center(child: AppLoadingAnimation());
+                case CharacterDetailsError(:final error):
+                  return ErrorContainer(error);
+                case CharacterDetailsIdle(:final character):
+                  return ListView(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppDimens.PADDING_8,
+                        ),
+                        height: 250,
+                        decoration: BoxDecoration(
+                          color: context.colorScheme.secondaryContainer,
+                          image: DecorationImage(
+                            image: NetworkImage(character.image),
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      character.name,
-                      style: context.textTheme.displaySmall!
-                          .copyWith(color: context.colorScheme.onSurface),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Other details.....',
-                      style: context.textTheme.bodyMedium!
-                          .copyWith(color: context.colorScheme.onSurface),
-                    ),
-                  ],
-                );
-            }
-          },
+                      const SizedBox(height: 8),
+                      Text(
+                        character.name,
+                        style: context.textTheme.displaySmall!
+                            .copyWith(color: context.colorScheme.onSurface),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Other details.....',
+                        style: context.textTheme.bodyMedium!
+                            .copyWith(color: context.colorScheme.onSurface),
+                      ),
+                    ],
+                  );
+              }
+            },
+          ),
         ),
       ),
     );
