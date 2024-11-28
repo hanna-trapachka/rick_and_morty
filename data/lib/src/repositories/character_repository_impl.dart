@@ -15,9 +15,9 @@ class CharacterRepositoryImpl implements CharacterRepository {
   }
 
   @override
-  Future<CharacterListResponse> getList(Pagination pagination) async {
+  Future<CharacterListResponse> getList(CharactersQuery query) async {
     final response =
-        await _characterProvider.getList(PaginationMapper.toDto(pagination));
+        await _characterProvider.getList(CharactersQueryMapper.toDto(query));
     return CharacterListResponseMapper.fromEntity(response);
   }
 }

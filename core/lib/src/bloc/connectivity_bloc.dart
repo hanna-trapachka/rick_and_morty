@@ -10,7 +10,6 @@ class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
         .onConnectivityChanged
         .listen((List<ConnectivityResult> result) {
       final isConnected = !result.contains(ConnectivityResult.none);
-      print("connectivity status - ${result}");
       add(_ConnectivityChanged(isConnected: isConnected));
     });
 
