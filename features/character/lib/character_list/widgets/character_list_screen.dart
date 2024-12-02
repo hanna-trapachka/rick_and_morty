@@ -61,7 +61,7 @@ class CharacterListScreen extends StatelessWidget {
 }
 
 class _CharacterFilters extends StatelessWidget {
-  const _CharacterFilters({super.key});
+  const _CharacterFilters();
 
   @override
   Widget build(BuildContext context) {

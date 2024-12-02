@@ -2,7 +2,6 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
 import '../../core_ui.dart';
-import 'retry_error_widget.dart';
 
 class InfiniteList extends StatefulWidget {
   const InfiniteList({
