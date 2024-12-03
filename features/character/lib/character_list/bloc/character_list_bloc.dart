@@ -3,18 +3,32 @@ import 'package:domain/domain.dart';
 import 'package:equatable/equatable.dart';
 
 class CharacterListBloc extends Bloc<CharacterListEvent, CharacterListState> {
-  CharacterListBloc(this._getListUseCase) : super(CharacterListState()) {
+  CharacterListBloc({
+    required OfflineModeService offlineModeService,
+    required CharacterRepository repository,
+  }) : super(CharacterListState()) {
+    _offlineModeService = offlineModeService;
+    _repository = repository;
+
     on<CharacterListEvent>(
       (event, emit) => switch (event) {
-        final _CharacterListFetched e => _query(e, emit),
+        final _CharacterListFetched e => _fetch(e, emit),
         final _CharacterListFiltered e => _filter(e, emit),
+        final _CharacterListOfflineModeToggled e => _toggleOfflineMode(e, emit),
+      },
+    );
+
+    _offlineModeService.stream.listen(
+      (bool modeActive) {
+        add(_CharacterListOfflineModeToggled(activated: modeActive));
       },
     );
   }
 
-  final GetCharacterListUseCase _getListUseCase;
+  late final CharacterRepository _repository;
+  late final OfflineModeService _offlineModeService;
 
-  Future<void> _query(
+  Future<void> _fetch(
     _CharacterListFetched event,
     Emitter<CharacterListState> emit,
   ) async {
@@ -30,7 +44,10 @@ class CharacterListBloc extends Bloc<CharacterListEvent, CharacterListState> {
         status: state.query.status,
         species: state.query.species,
       );
-      final data = await _getListUseCase.execute(query);
+      final data = await _repository.getList(
+        query,
+        returnCachedIfError: _offlineModeService.offlineModeActive,
+      );
 
       emit(
         state.copyWith(
@@ -63,8 +80,11 @@ class CharacterListBloc extends Bloc<CharacterListEvent, CharacterListState> {
     Emitter<CharacterListState> emit,
   ) async {
     try {
-      final query =
-          CharactersQuery(species: event.species, status: event.status);
+      final query = CharactersQuery(
+        species: event.species,
+        status: event.status,
+        page: 1,
+      );
       emit(
         state.copyWith(
           status: BlocStatusRecord.loading(),
@@ -73,10 +93,8 @@ class CharacterListBloc extends Bloc<CharacterListEvent, CharacterListState> {
         ),
       );
 
-      // for testing purposes
-      await Future.delayed(const Duration(seconds: 2), () => null);
-
-      final data = await _getListUseCase.execute(query);
+      Future.delayed(Duration(seconds: 2), () => null);
+      final data = await _repository.getList(query);
 
       emit(
         state.copyWith(
@@ -102,6 +120,14 @@ class CharacterListBloc extends Bloc<CharacterListEvent, CharacterListState> {
         ),
       );
     }
+  }
+
+  Future<void> _toggleOfflineMode(
+    _CharacterListOfflineModeToggled event,
+    Emitter<CharacterListState> emit,
+  ) async {
+    // refresh list on any change
+    add(CharacterListEvent.filter());
   }
 }
 
@@ -165,4 +191,13 @@ final class _CharacterListFiltered extends CharacterListEvent {
 
   @override
   List<Object?> get props => [species, status];
+}
+
+final class _CharacterListOfflineModeToggled extends CharacterListEvent {
+  const _CharacterListOfflineModeToggled({required this.activated});
+
+  final bool activated;
+
+  @override
+  List<Object?> get props => [activated];
 }

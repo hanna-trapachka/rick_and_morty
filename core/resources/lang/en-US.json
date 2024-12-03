@@ -11,7 +11,8 @@
   },
   "settings": {
     "settings": "Settings",
-    "dark_mode": "Dark Mode"
+    "dark_mode": "Dark Mode",
+    "offline_mode": "Offline Mode"
   },
   "character": {
     "characters": "Characters",

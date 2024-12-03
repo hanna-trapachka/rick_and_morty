@@ -32,6 +32,18 @@ class SettingsScreen extends StatelessWidget {
                 const _ThemeSwitcher(),
               ],
             ),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  LocaleKeys.settings_offline_mode.tr(),
+                  style: context.textTheme.labelMedium!
+                      .copyWith(color: context.colorScheme.onSurface),
+                ),
+                const _OfflineModeSwitcher(),
+              ],
+            ),
           ],
         ),
       ),
@@ -51,6 +63,27 @@ class _ThemeSwitcher extends StatelessWidget {
           context.read<ThemeBloc>().add(ThemeEvent.change());
         },
       ),
+    );
+  }
+}
+
+class _OfflineModeSwitcher extends StatelessWidget {
+  const _OfflineModeSwitcher();
+
+  @override
+  Widget build(BuildContext context) {
+    final service = appLocator.get<OfflineModeService>();
+
+    return StreamBuilder<bool>(
+      stream: service.stream,
+      builder: (context, snapshot) {
+        return Switch(
+          value: service.offlineModeActive,
+          onChanged: (bool val) async {
+            await service.notify(active: val);
+          },
+        );
+      },
     );
   }
 }

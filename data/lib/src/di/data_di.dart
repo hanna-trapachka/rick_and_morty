@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 
 import '../../data.dart';
+import '../providers/database/app_database.dart';
 
 abstract class DataDI {
   static void initDependencies(GetIt locator) {
@@ -25,6 +26,8 @@ abstract class DataDI {
   }
 
   static void _initProviders(GetIt locator) {
+    locator.registerSingleton<AppDatabase>(AppDatabase());
+
     locator.registerLazySingleton<ApiProvider>(
       () => ApiProvider(locator<DioConfig>().dio),
     );
@@ -32,11 +35,18 @@ abstract class DataDI {
     locator.registerLazySingleton<CharacterProvider>(
       () => CharacterProvider(locator<ApiProvider>()),
     );
+
+    locator.registerLazySingleton<CharacterProviderLocal>(
+      () => CharacterProviderLocal(locator<AppDatabase>()),
+    );
   }
 
   static void _initRepositories(GetIt locator) {
     locator.registerLazySingleton<CharacterRepository>(
-      () => CharacterRepositoryImpl(locator<CharacterProvider>()),
+      () => CharacterRepositoryImpl(
+        characterProvider: locator<CharacterProvider>(),
+        localProvider: locator<CharacterProviderLocal>(),
+      ),
     );
   }
 }

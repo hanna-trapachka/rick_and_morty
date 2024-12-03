@@ -1,3 +1,5 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../core.dart';
 
 final GetIt appLocator = GetIt.instance;
@@ -22,5 +24,11 @@ abstract class AppDI {
     locator.registerLazySingleton<AppEventObserver>(
       appLocator.call<AppEventBus>,
     );
+
+    locator.registerLazySingletonAsync(
+      () async => SharedPreferences.getInstance(),
+    );
+
+    locator.registerSingleton(OfflineModeService());
   }
 }

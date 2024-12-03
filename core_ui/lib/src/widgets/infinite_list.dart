@@ -44,9 +44,10 @@ class _InfiniteListState extends State<InfiniteList> {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.offset;
 
-    final shouldLoad = currentScroll >= (maxScroll * 0.9);
+    final shouldFetch =
+        currentScroll >= (maxScroll * 0.9) && !widget.hasReachedMax;
 
-    if (shouldLoad && !widget.isLoading) {
+    if (shouldFetch && !widget.isLoading) {
       widget.loadMore?.call();
     }
   }

@@ -15,9 +15,10 @@ class CharacterListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          CharacterListBloc(appLocator.get<GetCharacterListUseCase>())
-            ..add(CharacterListEvent.fetch()),
+      create: (context) => CharacterListBloc(
+        repository: appLocator.get<CharacterRepository>(),
+        offlineModeService: appLocator.get<OfflineModeService>(),
+      )..add(CharacterListEvent.fetch()),
       child: Scaffold(
         appBar: AppBar(
           title: Text(LocaleKeys.character_characters.tr()),
