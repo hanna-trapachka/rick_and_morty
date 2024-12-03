@@ -93,8 +93,10 @@ class CharacterListBloc extends Bloc<CharacterListEvent, CharacterListState> {
         ),
       );
 
-      Future.delayed(Duration(seconds: 2), () => null);
-      final data = await _repository.getList(query);
+      final data = await _repository.getList(
+        query,
+        returnCachedIfError: _offlineModeService.offlineModeActive,
+      );
 
       emit(
         state.copyWith(

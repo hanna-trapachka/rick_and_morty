@@ -14,47 +14,83 @@ class CharacterListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final offlineModeService = appLocator.get<OfflineModeService>();
+
     return BlocProvider(
       create: (context) => CharacterListBloc(
         repository: appLocator.get<CharacterRepository>(),
-        offlineModeService: appLocator.get<OfflineModeService>(),
+        offlineModeService: offlineModeService,
       )..add(CharacterListEvent.fetch()),
       child: Scaffold(
         appBar: AppBar(
           title: Text(LocaleKeys.character_characters.tr()),
         ),
-        body: Column(
-          children: [
-            const _CharacterFilters(),
-            BlocBuilder<CharacterListBloc, CharacterListState>(
-              builder: (context, state) {
-                if (state.status.isLoading && state.initial) {
-                  return const Expanded(
-                    child: Center(child: AppLoadingAnimation()),
-                  );
-                } else {
-                  return Expanded(
-                    child: InfiniteList(
-                      itemBuilder: (context, index) => CharacterListTile(
-                        key: ValueKey(state.data[index].id),
-                        state.data[index],
-                        onPressed: () => context.pushRoute(
-                          CharacterDetailsRoute(id: state.data[index].id),
-                        ),
-                      ),
-                      itemsCount: state.data.length,
-                      loadMore: () => context
-                          .read<CharacterListBloc>()
-                          .add(CharacterListEvent.fetch()),
-                      isLoading: state.status.isLoading,
-                      hasReachedMax: state.hasReachedMax,
-                      error: state.status.isError ? state.status.error : null,
-                    ),
-                  );
-                }
-              },
-            ),
-          ],
+        body: BlocBuilder<CharacterListBloc, CharacterListState>(
+          builder: (context, state) {
+            return RefreshIndicator(
+              onRefresh: () async => context
+                  .read<CharacterListBloc>()
+                  .add(CharacterListEvent.filter()),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const _CharacterFilters(),
+                  BlocBuilder<ConnectivityBloc, ConnectivityState>(
+                    builder: (context, state) {
+                      return StreamBuilder<bool>(
+                        stream: appLocator.get<OfflineModeService>().stream,
+                        builder: (context, snapshot) {
+                          return offlineModeService.offlineModeActive &&
+                                  state is ConnectivityFailure
+                              ? Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 4),
+                                  color:
+                                      context.colorScheme.surfaceContainerHigh,
+                                  child: Text(
+                                    LocaleKeys.settings_offline_mode.tr(),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )
+                              : const SizedBox.shrink();
+                        },
+                      );
+                    },
+                  ),
+                  BlocBuilder<CharacterListBloc, CharacterListState>(
+                    builder: (context, state) {
+                      if (state.status.isLoading && state.initial) {
+                        return const Expanded(
+                          child: Center(child: AppLoadingAnimation()),
+                        );
+                      } else {
+                        return Expanded(
+                          child: InfiniteList(
+                            itemBuilder: (context, index) => CharacterListTile(
+                              key: ValueKey(state.data[index].id),
+                              state.data[index],
+                              onPressed: () => context.pushRoute(
+                                CharacterDetailsRoute(id: state.data[index].id),
+                              ),
+                            ),
+                            itemsCount: state.data.length,
+                            loadMore: () => context
+                                .read<CharacterListBloc>()
+                                .add(CharacterListEvent.fetch()),
+                            isLoading: state.status.isLoading,
+                            hasReachedMax: state.hasReachedMax,
+                            error: state.status.isError
+                                ? state.status.error
+                                : null,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
