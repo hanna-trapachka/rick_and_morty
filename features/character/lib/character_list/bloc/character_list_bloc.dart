@@ -2,6 +2,9 @@ import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 import 'package:equatable/equatable.dart';
 
+part 'character_list_state.dart';
+part 'character_list_event.dart';
+
 class CharacterListBloc extends Bloc<CharacterListEvent, CharacterListState> {
   CharacterListBloc({
     required OfflineModeService offlineModeService,
@@ -131,75 +134,4 @@ class CharacterListBloc extends Bloc<CharacterListEvent, CharacterListState> {
     // refresh list on any change
     add(CharacterListEvent.filter());
   }
-}
-
-final class CharacterListState extends Equatable {
-  CharacterListState({
-    BlocStatusRecord? status,
-    this.data = const [],
-    this.query = const CharactersQuery(),
-    this.hasReachedMax = false,
-    this.initial = true,
-  }) : status = status ?? BlocStatusRecord.loading();
-
-  final BlocStatusRecord status;
-  final List<Character> data;
-  final CharactersQuery query;
-  final bool hasReachedMax;
-  final bool initial;
-
-  CharacterListState copyWith({
-    BlocStatusRecord? status,
-    List<Character>? data,
-    CharactersQuery? query,
-    bool? hasReachedMax,
-    bool? initial,
-  }) =>
-      CharacterListState(
-        status: status ?? this.status,
-        data: data ?? this.data,
-        query: query ?? this.query,
-        hasReachedMax: hasReachedMax ?? this.hasReachedMax,
-        initial: initial ?? this.initial,
-      );
-
-  @override
-  List<Object?> get props => [status, data, query, hasReachedMax];
-}
-
-sealed class CharacterListEvent extends Equatable {
-  const CharacterListEvent();
-
-  factory CharacterListEvent.fetch() => const _CharacterListFetched();
-  factory CharacterListEvent.filter({
-    CharacterSpecies? species,
-    CharacterStatus? status,
-  }) =>
-      _CharacterListFiltered(species: species, status: status);
-
-  @override
-  List<Object?> get props => [];
-}
-
-final class _CharacterListFetched extends CharacterListEvent {
-  const _CharacterListFetched();
-}
-
-final class _CharacterListFiltered extends CharacterListEvent {
-  const _CharacterListFiltered({this.species, this.status});
-
-  final CharacterSpecies? species;
-  final CharacterStatus? status;
-
-  @override
-  List<Object?> get props => [species, status];
-}
-
-final class _CharacterListOfflineModeToggled extends CharacterListEvent {
-  const _CharacterListOfflineModeToggled({required this.activated});
-
-  final bool activated;
-
-  @override
-  List<Object?> get props => [activated];
 }
