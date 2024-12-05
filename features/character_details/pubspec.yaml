@@ -1,5 +1,5 @@
-name: character
-description: Character feature
+name: character_details
+description: Character details feature
 version: 0.0.1
 publish_to: none
 environment:
@@ -18,8 +18,6 @@ dependencies:
     path: ../../core_ui
   navigation:
     path: ../../navigation
-  character_details:
-    path: ../character_details
 
   flutter_bloc: ^8.1.6
   equatable: ^2.0.7

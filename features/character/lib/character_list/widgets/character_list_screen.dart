@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:character_details/character_details.dart';
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 
-import '../../character.dart';
 import '../bloc/character_list_bloc.dart';
 import 'character_list_tile.dart';
 

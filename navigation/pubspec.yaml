@@ -17,6 +17,8 @@ dependencies:
     path: ../features/dashboard
   character:
     path: ../features/character
+  character_details:
+    path: ../features/character_details
   settings:
     path: ../features/settings
 
