@@ -7,14 +7,12 @@ class InfiniteList extends StatefulWidget {
     required this.itemBuilder,
     required this.itemsCount,
     this.loadMore,
-    this.isLoading = true,
     this.hasReachedMax = false,
   });
 
   final int itemsCount;
   final Widget Function(BuildContext, int) itemBuilder;
   final VoidCallback? loadMore;
-  final bool isLoading;
   final bool hasReachedMax;
 
   @override
@@ -44,7 +42,7 @@ class _InfiniteListState extends State<InfiniteList> {
     final shouldFetch =
         currentScroll >= (maxScroll * 0.9) && !widget.hasReachedMax;
 
-    if (shouldFetch && !widget.isLoading) {
+    if (shouldFetch) {
       widget.loadMore?.call();
     }
   }
@@ -59,32 +57,12 @@ class _InfiniteListState extends State<InfiniteList> {
           vertical: AppDimens.PADDING_10,
         ),
         itemBuilder: (context, index) => index >= widget.itemsCount
-            ? _ListFooterItem(
-                onRetryPressed: widget.loadMore,
-                isLoading: widget.isLoading,
-              )
+            ? const Center(child: AppLoadingAnimation(size: 40))
             : widget.itemBuilder(context, index),
         separatorBuilder: (context, index) => const SizedBox(height: 12),
         itemCount:
             widget.hasReachedMax ? widget.itemsCount : widget.itemsCount + 1,
       ),
-    );
-  }
-}
-
-class _ListFooterItem extends StatelessWidget {
-  const _ListFooterItem({required this.isLoading, this.onRetryPressed});
-
-  final VoidCallback? onRetryPressed;
-  final bool isLoading;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 40),
-      child: isLoading
-          ? const Center(child: AppLoadingAnimation(size: 40))
-          : const SizedBox.shrink(),
     );
   }
 }

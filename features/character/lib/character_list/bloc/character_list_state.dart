@@ -1,35 +1,54 @@
 part of 'character_list_bloc.dart';
 
-final class CharacterListState extends Equatable {
-  CharacterListState({
-    BlocStatusRecord? status,
-    this.data = const [],
+sealed class CharacterListState extends Equatable {
+  const CharacterListState({
     this.query = const CharactersQuery(),
-    this.hasReachedMax = false,
-    this.initial = true,
-  }) : status = status ?? BlocStatusRecord.loading();
+  });
 
-  final BlocStatusRecord status;
-  final List<Character> data;
   final CharactersQuery query;
-  final bool hasReachedMax;
-  final bool initial;
 
-  CharacterListState copyWith({
-    BlocStatusRecord? status,
+  @override
+  List<Object?> get props => [query];
+}
+
+final class CharacterListFreshLoading extends CharacterListState {
+  const CharacterListFreshLoading({super.query});
+
+  @override
+  List<Object?> get props => [query];
+}
+
+final class CharacterListError extends CharacterListState {
+  const CharacterListError(this.error, {super.query});
+
+  final String error;
+
+  @override
+  List<Object?> get props => [error, query];
+}
+
+final class CharacterListIdle extends CharacterListState {
+  const CharacterListIdle({
+    this.data = const [],
+    this.hasReachedMax = false,
+    super.query,
+  });
+
+  final List<Character> data;
+  final bool hasReachedMax;
+
+  CharacterListIdle copyWith({
     List<Character>? data,
     CharactersQuery? query,
     bool? hasReachedMax,
-    bool? initial,
+    bool? isLoading,
   }) =>
-      CharacterListState(
-        status: status ?? this.status,
+      CharacterListIdle(
         data: data ?? this.data,
         query: query ?? this.query,
         hasReachedMax: hasReachedMax ?? this.hasReachedMax,
-        initial: initial ?? this.initial,
       );
 
   @override
-  List<Object?> get props => [status, data, query, hasReachedMax];
+  List<Object?> get props => [data, query, hasReachedMax];
 }

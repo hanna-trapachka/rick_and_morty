@@ -3,36 +3,32 @@ part of 'character_list_bloc.dart';
 sealed class CharacterListEvent extends Equatable {
   const CharacterListEvent();
 
-  factory CharacterListEvent.fetch() => const _CharacterListFetched();
-  factory CharacterListEvent.filter({
+  factory CharacterListEvent.fetch({
     CharacterSpecies? species,
     CharacterStatus? status,
+    bool refresh = false,
   }) =>
-      _CharacterListFiltered(species: species, status: status);
+      _CharacterListFetched(
+        species: species,
+        status: status,
+        refresh: refresh,
+      );
 
   @override
   List<Object?> get props => [];
 }
 
 final class _CharacterListFetched extends CharacterListEvent {
-  const _CharacterListFetched();
-}
-
-final class _CharacterListFiltered extends CharacterListEvent {
-  const _CharacterListFiltered({this.species, this.status});
+  const _CharacterListFetched({
+    this.species,
+    this.status,
+    required this.refresh,
+  });
 
   final CharacterSpecies? species;
   final CharacterStatus? status;
+  final bool refresh;
 
   @override
-  List<Object?> get props => [species, status];
-}
-
-final class _CharacterListOfflineModeToggled extends CharacterListEvent {
-  const _CharacterListOfflineModeToggled({required this.activated});
-
-  final bool activated;
-
-  @override
-  List<Object?> get props => [activated];
+  List<Object?> get props => [species, status, refresh];
 }

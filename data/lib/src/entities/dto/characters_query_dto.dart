@@ -5,7 +5,7 @@ part 'characters_query_dto.g.dart';
 
 @JsonSerializable()
 class CharactersQueryDto {
-  const CharactersQueryDto({this.species, this.status, this.page = 0});
+  const CharactersQueryDto({this.species, this.status, this.page = 1});
 
   @JsonKey(includeIfNull: false)
   final CharacterSpecies? species;
@@ -16,6 +16,5 @@ class CharactersQueryDto {
   factory CharactersQueryDto.fromJson(Map<String, dynamic> json) =>
       _$CharactersQueryDtoFromJson(json);
 
-  @override
   Map<String, dynamic> toJson() => _$CharactersQueryDtoToJson(this);
 }

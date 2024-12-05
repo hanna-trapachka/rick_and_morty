@@ -14,13 +14,10 @@ class CharacterListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final offlineModeService = appLocator.get<OfflineModeService>();
-
     return BlocProvider(
       create: (context) => CharacterListBloc(
-        repository: appLocator.get<CharacterRepository>(),
-        offlineModeService: offlineModeService,
-      )..add(CharacterListEvent.fetch()),
+        appLocator.get<GetCharacterListUseCase>(),
+      )..add(CharacterListEvent.fetch(refresh: true)),
       child: Scaffold(
         appBar: AppBar(
           title: Text(LocaleKeys.character_characters.tr()),
@@ -30,58 +27,25 @@ class CharacterListScreen extends StatelessWidget {
             return RefreshIndicator(
               onRefresh: () async => context
                   .read<CharacterListBloc>()
-                  .add(CharacterListEvent.filter()),
+                  .add(CharacterListEvent.fetch(refresh: true)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const _CharacterFilters(),
-                  BlocBuilder<ConnectivityBloc, ConnectivityState>(
-                    builder: (context, state) {
-                      return StreamBuilder<bool>(
-                        stream: appLocator.get<OfflineModeService>().stream,
-                        builder: (context, snapshot) {
-                          return offlineModeService.offlineModeActive &&
-                                  state is ConnectivityFailure
-                              ? Container(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 4),
-                                  color:
-                                      context.colorScheme.surfaceContainerHigh,
-                                  child: Text(
-                                    LocaleKeys.settings_offline_mode.tr(),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                )
-                              : const SizedBox.shrink();
-                        },
-                      );
-                    },
-                  ),
                   BlocBuilder<CharacterListBloc, CharacterListState>(
                     builder: (context, state) {
-                      if (state.status.isLoading && state.initial) {
-                        return const Expanded(
-                          child: Center(child: AppLoadingAnimation()),
-                        );
-                      } else {
-                        return Expanded(
-                          child: InfiniteList(
-                            itemBuilder: (context, index) => CharacterListTile(
-                              key: ValueKey(state.data[index].id),
-                              state.data[index],
-                              onPressed: () => context.pushRoute(
-                                CharacterDetailsRoute(id: state.data[index].id),
-                              ),
-                            ),
-                            itemsCount: state.data.length,
-                            loadMore: () => context
-                                .read<CharacterListBloc>()
-                                .add(CharacterListEvent.fetch()),
-                            isLoading: state.status.isLoading,
-                            hasReachedMax: state.hasReachedMax,
+                      return switch (state) {
+                        CharacterListFreshLoading() => const Expanded(
+                            child: Center(child: AppLoadingAnimation()),
                           ),
-                        );
-                      }
+                        CharacterListError(:final error) =>
+                          ErrorContainer(error),
+                        CharacterListIdle(:final data, :final hasReachedMax) =>
+                          _CharacterListContent(
+                            data: data,
+                            hasReachedMax: hasReachedMax,
+                          ),
+                      };
                     },
                   ),
                 ],
@@ -122,9 +86,10 @@ class _CharacterFilters extends StatelessWidget {
                       convertedValue = CharacterStatus.fromString(value);
                     }
                     bloc.add(
-                      CharacterListEvent.filter(
+                      CharacterListEvent.fetch(
                         species: state.query.species,
                         status: convertedValue,
+                        refresh: true,
                       ),
                     );
                   },
@@ -143,9 +108,10 @@ class _CharacterFilters extends StatelessWidget {
                       convertedValue = CharacterSpecies.fromString(value);
                     }
                     bloc.add(
-                      CharacterListEvent.filter(
+                      CharacterListEvent.fetch(
                         species: convertedValue,
                         status: state.query.status,
+                        refresh: true,
                       ),
                     );
                   },
@@ -155,6 +121,37 @@ class _CharacterFilters extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _CharacterListContent extends StatelessWidget {
+  const _CharacterListContent({
+    required this.data,
+    required this.hasReachedMax,
+  });
+
+  final List<Character> data;
+  final bool hasReachedMax;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: InfiniteList(
+        itemBuilder: (context, index) => CharacterListTile(
+          data[index],
+          key: ValueKey(data[index].id),
+          onPressed: () => context.pushRoute(
+            CharacterDetailsRoute(
+              id: data[index].id,
+            ),
+          ),
+        ),
+        itemsCount: data.length,
+        loadMore: () =>
+            context.read<CharacterListBloc>().add(CharacterListEvent.fetch()),
+        hasReachedMax: hasReachedMax,
+      ),
     );
   }
 }

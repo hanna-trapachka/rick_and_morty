@@ -6,132 +6,68 @@ part 'character_list_state.dart';
 part 'character_list_event.dart';
 
 class CharacterListBloc extends Bloc<CharacterListEvent, CharacterListState> {
-  CharacterListBloc({
-    required OfflineModeService offlineModeService,
-    required CharacterRepository repository,
-  }) : super(CharacterListState()) {
-    _offlineModeService = offlineModeService;
-    _repository = repository;
-
+  CharacterListBloc(this.getListUseCase)
+      : super(const CharacterListFreshLoading()) {
     on<CharacterListEvent>(
       (event, emit) => switch (event) {
         final _CharacterListFetched e => _fetch(e, emit),
-        final _CharacterListFiltered e => _filter(e, emit),
-        final _CharacterListOfflineModeToggled e => _toggleOfflineMode(e, emit),
-      },
-    );
-
-    _offlineModeService.stream.listen(
-      (bool modeActive) {
-        add(_CharacterListOfflineModeToggled(activated: modeActive));
       },
     );
   }
 
-  late final CharacterRepository _repository;
-  late final OfflineModeService _offlineModeService;
+  late final GetCharacterListUseCase getListUseCase;
 
   Future<void> _fetch(
     _CharacterListFetched event,
     Emitter<CharacterListState> emit,
   ) async {
+    if (event.refresh) {
+      return _refresh(event, emit);
+    }
+    if (state is! CharacterListIdle) return;
+
+    final idleState = state as CharacterListIdle;
+    final query = CharactersQuery(
+      page: idleState.query.page + 1,
+      status: idleState.query.status,
+      species: idleState.query.species,
+    );
+
     try {
-      emit(state.copyWith(status: BlocStatusRecord.loading()));
-
-      // for testing purposes
-      await Future.delayed(const Duration(seconds: 2), () => null);
-
-      final nextPage = state.query.page + 1;
-      final query = CharactersQuery(
-        page: nextPage,
-        status: state.query.status,
-        species: state.query.species,
-      );
-      final data = await _repository.getList(
-        query,
-        returnCachedIfError: _offlineModeService.offlineModeActive,
-      );
+      final data = await getListUseCase.execute(query);
 
       emit(
-        state.copyWith(
-          status: BlocStatusRecord.idle(),
-          data: [...state.data, ...data.results],
+        idleState.copyWith(
+          data: [...idleState.data, ...data.results],
           query: query,
           hasReachedMax: data.info.next == null,
-          initial: false,
-        ),
-      );
-    } on RestClientException catch (e) {
-      emit(
-        state.copyWith(
-          status: BlocStatusRecord.error(e.message),
-          initial: false,
         ),
       );
     } catch (e) {
-      emit(
-        state.copyWith(
-          status: BlocStatusRecord.error(e.toString()),
-          initial: false,
-        ),
-      );
+      emit(CharacterListError(e.toString(), query: query));
     }
   }
 
-  Future<void> _filter(
-    _CharacterListFiltered event,
+  Future<void> _refresh(
+    _CharacterListFetched event,
     Emitter<CharacterListState> emit,
   ) async {
+    final query = CharactersQuery(species: event.species, status: event.status);
+
     try {
-      final query = CharactersQuery(
-        species: event.species,
-        status: event.status,
-        page: 1,
-      );
-      emit(
-        state.copyWith(
-          status: BlocStatusRecord.loading(),
-          initial: true,
-          query: query,
-        ),
-      );
+      emit(CharacterListFreshLoading(query: query));
 
-      final data = await _repository.getList(
-        query,
-        returnCachedIfError: _offlineModeService.offlineModeActive,
-      );
+      final data = await getListUseCase.execute(query);
 
       emit(
-        state.copyWith(
-          status: BlocStatusRecord.idle(),
+        CharacterListIdle(
           data: data.results,
           query: query,
           hasReachedMax: data.info.next == null,
-          initial: false,
-        ),
-      );
-    } on RestClientException catch (e) {
-      emit(
-        state.copyWith(
-          status: BlocStatusRecord.error(e.message),
-          initial: false,
         ),
       );
     } catch (e) {
-      emit(
-        state.copyWith(
-          status: BlocStatusRecord.error(e.toString()),
-          initial: false,
-        ),
-      );
+      emit(CharacterListError(e.toString(), query: query));
     }
-  }
-
-  Future<void> _toggleOfflineMode(
-    _CharacterListOfflineModeToggled event,
-    Emitter<CharacterListState> emit,
-  ) async {
-    // refresh list on any change
-    add(CharacterListEvent.filter());
   }
 }
