@@ -5,8 +5,6 @@ import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/navigation.dart';
 
-import 'error_handler/provider/app_error_handler_provider.dart';
-
 Future<void> mainCommon(Flavor flavor) async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
@@ -48,19 +46,17 @@ class App extends StatelessWidget {
             ],
             child: BlocBuilder<ThemeBloc, Brightness>(
               builder: (context, state) {
-                return AppErrorHandlerProvider(
-                  child: MaterialApp.router(
-                    debugShowCheckedModeBanner: false,
-                    routerConfig: appRouter.config(),
-                    localizationsDelegates: context.localizationDelegates,
-                    supportedLocales: context.supportedLocales,
-                    locale: context.locale,
-                    theme: AppTheme.light,
-                    darkTheme: AppTheme.dark,
-                    themeMode: state == Brightness.light
-                        ? ThemeMode.light
-                        : ThemeMode.dark,
-                  ),
+                return MaterialApp.router(
+                  debugShowCheckedModeBanner: false,
+                  routerConfig: appRouter.config(),
+                  localizationsDelegates: context.localizationDelegates,
+                  supportedLocales: context.supportedLocales,
+                  locale: context.locale,
+                  theme: AppTheme.light,
+                  darkTheme: AppTheme.dark,
+                  themeMode: state == Brightness.light
+                      ? ThemeMode.light
+                      : ThemeMode.dark,
                 );
               },
             ),

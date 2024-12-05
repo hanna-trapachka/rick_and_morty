@@ -13,18 +13,6 @@ abstract class AppDI {
       AppConfig.fromFlavor(flavor),
     );
 
-    locator.registerLazySingleton<AppEventBus>(
-      AppEventBus.new,
-    );
-
-    locator.registerLazySingleton<AppEventNotifier>(
-      appLocator.call<AppEventBus>,
-    );
-
-    locator.registerLazySingleton<AppEventObserver>(
-      appLocator.call<AppEventBus>,
-    );
-
     locator.registerLazySingletonAsync(
       () async => SharedPreferences.getInstance(),
     );

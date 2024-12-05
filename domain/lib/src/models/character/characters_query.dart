@@ -1,8 +1,9 @@
 import '../../../domain.dart';
 
-class CharactersQuery extends Pagination {
-  const CharactersQuery({this.species, this.status, super.page});
+class CharactersQuery {
+  const CharactersQuery({this.species, this.status, this.page = 0});
 
   final CharacterSpecies? species;
   final CharacterStatus? status;
+  final int page;
 }

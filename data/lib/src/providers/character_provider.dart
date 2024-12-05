@@ -8,11 +8,9 @@ class CharacterProvider {
 
   final ApiProvider _apiProvider;
 
-  Future<CharacterListResponseEntity> getList(
-    PaginationDto pagination,
-  ) async {
+  Future<CharacterListResponseEntity> getList(CharactersQueryDto query) async {
     final response =
-        await _apiProvider.get('/character', queryParams: pagination.toJson());
+        await _apiProvider.get('/character', queryParams: query.toJson());
 
     if (response == null) {
       throw const ClientException(message: 'Character list response is null');

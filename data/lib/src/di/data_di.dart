@@ -17,12 +17,6 @@ abstract class DataDI {
         appConfig: locator<AppConfig>(),
       ),
     );
-
-    locator.registerLazySingleton<ErrorHandler>(
-      () => ErrorHandler(
-        eventNotifier: locator<AppEventNotifier>(),
-      ),
-    );
   }
 
   static void _initProviders(GetIt locator) {

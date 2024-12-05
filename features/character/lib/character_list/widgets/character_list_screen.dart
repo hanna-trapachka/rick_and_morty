@@ -79,9 +79,6 @@ class CharacterListScreen extends StatelessWidget {
                                 .add(CharacterListEvent.fetch()),
                             isLoading: state.status.isLoading,
                             hasReachedMax: state.hasReachedMax,
-                            error: state.status.isError
-                                ? state.status.error
-                                : null,
                           ),
                         );
                       }

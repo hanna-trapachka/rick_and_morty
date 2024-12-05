@@ -12,11 +12,8 @@ class ErrorInterceptor extends Interceptor {
   ) async {
     switch (err.type) {
       case DioExceptionType.cancel:
-        break;
       case DioExceptionType.connectionTimeout:
-        break;
       case DioExceptionType.receiveTimeout:
-        break;
       case DioExceptionType.sendTimeout:
         break;
       case DioExceptionType.badResponse:
@@ -30,13 +27,8 @@ class ErrorInterceptor extends Interceptor {
         }
         break;
       case DioExceptionType.connectionError:
-        // TODO: Handle this case.
-        break;
       case DioExceptionType.badCertificate:
-        // TODO: Handle this case.
-        break;
       case DioExceptionType.unknown:
-        // TODO: Handle this case.
         break;
     }
 
