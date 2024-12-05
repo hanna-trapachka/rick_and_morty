@@ -53,8 +53,8 @@ class _InfiniteListState extends State<InfiniteList> {
       child: ListView.separated(
         controller: _scrollController,
         padding: const EdgeInsets.symmetric(
-          horizontal: AppDimens.PADDING_10,
-          vertical: AppDimens.PADDING_10,
+          horizontal: 10,
+          vertical: 10,
         ),
         itemBuilder: (context, index) => index >= widget.itemsCount
             ? const Center(child: AppLoadingAnimation(size: 40))

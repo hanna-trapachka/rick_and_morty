@@ -37,9 +37,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 return ListView(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppDimens.PADDING_8,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       height: 250,
                       decoration: BoxDecoration(
                         color: context.colorScheme.secondaryContainer,
