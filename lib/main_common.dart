@@ -42,7 +42,6 @@ class App extends StatelessWidget {
           return MultiBlocProvider(
             providers: [
               BlocProvider(create: (context) => ThemeBloc()),
-              BlocProvider(create: (context) => ConnectivityBloc()),
             ],
             child: BlocBuilder<ThemeBloc, Brightness>(
               builder: (context, state) {

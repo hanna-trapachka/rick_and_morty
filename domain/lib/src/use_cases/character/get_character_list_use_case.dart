@@ -1,20 +1,23 @@
-import '../../models/models.dart';
-import '../../repositories/repositories.dart';
-import '../use_case.dart';
+import '../../../domain.dart';
 
 class GetCharacterListUseCase
     extends FutureUseCase<CharactersQuery, CharacterListResponse> {
   GetCharacterListUseCase({
     required this.characterRepository,
     required this.characterRepositoryLocal,
+    required this.connectivityService,
   });
 
   final CharacterRepository characterRepository;
   final CharacterRepositoryLocal characterRepositoryLocal;
+  final ConnectivityService connectivityService;
 
   @override
   Future<CharacterListResponse> execute(CharactersQuery input) async {
-    // TODO(ann): if no connection return local data else return from server
-    return characterRepository.getList(input);
+    if (connectivityService.connected) {
+      return characterRepository.getList(input);
+    } else {
+      return characterRepositoryLocal.getCharacters(input);
+    }
   }
 }
