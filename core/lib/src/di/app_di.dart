@@ -16,7 +16,5 @@ abstract class AppDI {
     locator.registerLazySingletonAsync(
       () async => SharedPreferences.getInstance(),
     );
-
-    locator.registerSingleton(OfflineModeService());
   }
 }

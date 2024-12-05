@@ -10,5 +10,4 @@ export 'src/config/network/dio_config.dart';
 export 'src/di/app_di.dart';
 export 'src/localization/localization.dart';
 export 'src/logger/logger.dart';
-export 'src/services/services.dart';
 export 'src/utils/extensions.dart';
