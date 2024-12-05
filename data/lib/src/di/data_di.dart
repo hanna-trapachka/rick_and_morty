@@ -42,5 +42,10 @@ abstract class DataDI {
         localProvider: locator<CharacterProviderLocal>(),
       ),
     );
+    locator.registerLazySingleton<CharacterRepositoryLocal>(
+      () => CharacterRepositoryLocalImpl(
+        localProvider: locator<CharacterProviderLocal>(),
+      ),
+    );
   }
 }

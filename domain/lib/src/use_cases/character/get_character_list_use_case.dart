@@ -4,12 +4,17 @@ import '../use_case.dart';
 
 class GetCharacterListUseCase
     extends FutureUseCase<CharactersQuery, CharacterListResponse> {
-  GetCharacterListUseCase(this._characterRepository);
+  GetCharacterListUseCase({
+    required this.characterRepository,
+    required this.characterRepositoryLocal,
+  });
 
-  final CharacterRepository _characterRepository;
+  final CharacterRepository characterRepository;
+  final CharacterRepositoryLocal characterRepositoryLocal;
 
   @override
   Future<CharacterListResponse> execute(CharactersQuery input) async {
-    return _characterRepository.getList(input);
+    // TODO(ann): if no connection return local data else return from server
+    return characterRepository.getList(input);
   }
 }

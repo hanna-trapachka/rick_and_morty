@@ -33,23 +33,8 @@ class CharacterRepositoryImpl implements CharacterRepository {
     try {
       response = await _characterProvider.getList(queryDto);
     } catch (e) {
-      if (!returnCachedIfError) rethrow;
-
-      final records = await _localProvider.getCharacters(queryDto);
-
-      if (records.isNotEmpty) {
-        return CharacterListResponseMapper.fromEntity(
-          CharacterListResponseEntity(
-            info: CharacterListPaginationEntity(
-              count: records.length,
-              pages: 1,
-            ),
-            results: records,
-          ),
-        );
-      } else {
-        rethrow;
-      }
+      AppLogger().error(e.toString());
+      throw ClientException(message: e.toString());
     }
 
     try {

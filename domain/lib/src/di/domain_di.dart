@@ -10,7 +10,10 @@ abstract class DomainDI {
 
   static void _initUseCases(GetIt locator) {
     locator.registerSingleton<GetCharacterListUseCase>(
-      GetCharacterListUseCase(locator.get<CharacterRepository>()),
+      GetCharacterListUseCase(
+        characterRepository: locator.get<CharacterRepository>(),
+        characterRepositoryLocal: locator.get<CharacterRepositoryLocal>(),
+      ),
     );
     locator.registerSingleton<GetCharacterDetailsUseCase>(
       GetCharacterDetailsUseCase(locator.get<CharacterRepository>()),
