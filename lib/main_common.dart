@@ -37,28 +37,18 @@ class App extends StatelessWidget {
       path: AppLocalization.langFolderPath,
       supportedLocales: AppLocalization.supportedLocales,
       fallbackLocale: AppLocalization.fallbackLocale,
-      child: Builder(
-        builder: (BuildContext context) {
-          return MultiBlocProvider(
-            providers: [
-              BlocProvider(create: (context) => ThemeBloc()),
-            ],
-            child: BlocBuilder<ThemeBloc, Brightness>(
-              builder: (context, state) {
-                return MaterialApp.router(
-                  debugShowCheckedModeBanner: false,
-                  routerConfig: appRouter.config(),
-                  localizationsDelegates: context.localizationDelegates,
-                  supportedLocales: context.supportedLocales,
-                  locale: context.locale,
-                  theme: AppTheme.light,
-                  darkTheme: AppTheme.dark,
-                  themeMode: state == Brightness.light
-                      ? ThemeMode.light
-                      : ThemeMode.dark,
-                );
-              },
-            ),
+      child: StreamBuilder<ThemeMode>(
+        stream: appLocator.get<GetThemeModeStreamUseCase>().execute(),
+        builder: (context, snapshot) {
+          return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            routerConfig: appRouter.config(),
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            theme: AppTheme.light,
+            darkTheme: AppTheme.dark,
+            themeMode: snapshot.data,
           );
         },
       ),

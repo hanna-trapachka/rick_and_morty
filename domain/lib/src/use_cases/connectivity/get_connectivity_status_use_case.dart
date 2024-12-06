@@ -1,4 +1,4 @@
-import '../../domain.dart';
+import '../../../domain.dart';
 
 class GetConnectivityStatusUseCase extends UseCase<NoParams, bool> {
   GetConnectivityStatusUseCase(this._connectivityService);

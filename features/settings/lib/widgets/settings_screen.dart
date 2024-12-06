@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/navigation.dart';
 
@@ -44,13 +45,18 @@ class _ThemeSwitcher extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeBloc, Brightness>(
-      builder: (context, state) => Switch(
-        value: state == Brightness.dark,
-        onChanged: (bool val) {
-          context.read<ThemeBloc>().add(ThemeEvent.change());
-        },
-      ),
+    return StreamBuilder<ThemeMode>(
+      stream: appLocator.get<GetThemeModeStreamUseCase>().execute(),
+      builder: (context, snapshot) {
+        return Switch(
+          value: snapshot.data == ThemeMode.dark,
+          onChanged: (bool active) {
+            appLocator
+                .get<ChangeThemeModeUseCase>()
+                .execute(active ? ThemeMode.dark : ThemeMode.light);
+          },
+        );
+      },
     );
   }
 }
