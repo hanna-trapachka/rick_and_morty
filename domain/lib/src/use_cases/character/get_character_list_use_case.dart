@@ -5,16 +5,16 @@ class GetCharacterListUseCase
   GetCharacterListUseCase({
     required this.characterRepository,
     required this.characterRepositoryLocal,
-    required this.connectivityService,
+    required this.getConnectivityStatusUseCase,
   });
 
   final CharacterRepository characterRepository;
   final CharacterRepositoryLocal characterRepositoryLocal;
-  final ConnectivityService connectivityService;
+  final GetConnectivityStatusUseCase getConnectivityStatusUseCase;
 
   @override
   Future<CharacterListResponse> execute(CharactersQuery input) async {
-    if (connectivityService.connected) {
+    if (getConnectivityStatusUseCase.execute()) {
       return characterRepository.getList(input);
     } else {
       return characterRepositoryLocal.getCharacters(input);

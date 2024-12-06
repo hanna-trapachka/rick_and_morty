@@ -15,11 +15,15 @@ abstract class DomainDI {
   }
 
   static void _initUseCases(GetIt locator) {
+    locator.registerSingleton<GetConnectivityStatusUseCase>(
+      GetConnectivityStatusUseCase(locator.get<ConnectivityService>()),
+    );
     locator.registerSingleton<GetCharacterListUseCase>(
       GetCharacterListUseCase(
         characterRepository: locator.get<CharacterRepository>(),
         characterRepositoryLocal: locator.get<CharacterRepositoryLocal>(),
-        connectivityService: locator.get<ConnectivityService>(),
+        getConnectivityStatusUseCase:
+            locator.get<GetConnectivityStatusUseCase>(),
       ),
     );
     locator.registerSingleton<GetCharacterDetailsUseCase>(
