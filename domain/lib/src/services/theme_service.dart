@@ -9,6 +9,11 @@ class ThemeService with ChangeNotifier {
     _init();
   }
 
+  late final SharedPreferences _storage;
+  late ThemeMode _themeMode;
+
+  ThemeMode get themeMode => _themeMode;
+
   Future<void> _init() async {
     _storage = await SharedPreferences.getInstance();
 
@@ -21,10 +26,14 @@ class ThemeService with ChangeNotifier {
     notifyListeners();
   }
 
-  late final SharedPreferences _storage;
-  late ThemeMode _themeMode;
-
-  ThemeMode get themeMode => _themeMode;
+  ThemeMode _themeModeFromString(String str) {
+    try {
+      return ThemeMode.values.byName(str);
+    } catch (e) {
+      AppLogger().error('Could not map enum value: $str', e);
+      return ThemeMode.system;
+    }
+  }
 
   Future<void> changeTheme(ThemeMode themeMode) async {
     try {
@@ -34,14 +43,5 @@ class ThemeService with ChangeNotifier {
     } catch (e) {
       AppLogger().error('Could not change app theme', e);
     }
-  }
-
-  ThemeMode _themeModeFromString(String str) {
-    return switch (str) {
-      'system' => ThemeMode.system,
-      'dark' => ThemeMode.dark,
-      'light' => ThemeMode.light,
-      String() => ThemeMode.system
-    };
   }
 }
