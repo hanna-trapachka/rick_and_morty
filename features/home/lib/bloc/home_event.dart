@@ -14,3 +14,7 @@ final class _HomeInit extends HomeEvent {
 final class _ThemeModChanged extends HomeEvent {
   const _ThemeModChanged();
 }
+
+final class _ConnectionStatusChanged extends HomeEvent {
+  const _ConnectionStatusChanged();
+}

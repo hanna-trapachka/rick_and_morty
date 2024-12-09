@@ -2,7 +2,6 @@ import 'package:core/core.dart';
 
 import '../repositories/repositories.dart';
 import '../services/services.dart';
-import '../services/theme_service.dart';
 import '../use_cases/use_cases.dart';
 
 abstract class DomainDI {
@@ -18,8 +17,8 @@ abstract class DomainDI {
 
   static void _initUseCases(GetIt locator) {
     // Connectivity
-    locator.registerSingleton<GetConnectivityStatusUseCase>(
-      GetConnectivityStatusUseCase(locator.get<ConnectivityService>()),
+    locator.registerSingleton<GetConnectionStatusUseCase>(
+      GetConnectionStatusUseCase(locator.get<ConnectivityService>()),
     );
 
     // Theme
@@ -35,8 +34,7 @@ abstract class DomainDI {
       GetCharacterListUseCase(
         characterRepository: locator.get<CharacterRepository>(),
         characterRepositoryLocal: locator.get<CharacterRepositoryLocal>(),
-        getConnectivityStatusUseCase:
-            locator.get<GetConnectivityStatusUseCase>(),
+        getConnectivityStatusUseCase: locator.get<GetConnectionStatusUseCase>(),
       ),
     );
     locator.registerSingleton<GetCharacterDetailsUseCase>(

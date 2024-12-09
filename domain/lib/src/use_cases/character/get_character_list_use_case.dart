@@ -10,7 +10,7 @@ class GetCharacterListUseCase
 
   final CharacterRepository characterRepository;
   final CharacterRepositoryLocal characterRepositoryLocal;
-  final GetConnectivityStatusUseCase getConnectivityStatusUseCase;
+  final GetConnectionStatusUseCase getConnectivityStatusUseCase;
 
   @override
   Future<CharacterListResponse> execute(CharactersQuery input) async {

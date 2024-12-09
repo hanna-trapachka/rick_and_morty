@@ -39,6 +39,7 @@ class App extends StatelessWidget {
         themeService: appLocator<ThemeService>(),
         connectivityService: appLocator<ConnectivityService>(),
         getThemeMode: appLocator<GetThemeModeUseCase>(),
+        getConnectivityStatus: appLocator<GetConnectionStatusUseCase>(),
       ),
       child: EasyLocalization(
         path: AppLocalization.langFolderPath,

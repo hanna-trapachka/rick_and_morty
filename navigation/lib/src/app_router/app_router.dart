@@ -20,19 +20,14 @@ class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => <AutoRoute>[
         AutoRoute(
-          page: ConnectionWrapperRoute.page,
+          page: DashboardRoute.page,
           initial: true,
           children: [
-            AutoRoute(
-              page: DashboardRoute.page,
-              initial: true,
-              children: [
-                AutoRoute(page: CharacterListRoute.page, initial: true),
-                AutoRoute(page: SettingsRoute.page),
-              ],
-            ),
-            AutoRoute(page: CharacterDetailsRoute.page),
+            AutoRoute(page: CharacterListRoute.page, initial: true),
+            AutoRoute(page: SettingsRoute.page),
           ],
         ),
+        AutoRoute(page: CharacterDetailsRoute.page),
+        AutoRoute(page: NoConnectionRoute.page),
       ];
 }

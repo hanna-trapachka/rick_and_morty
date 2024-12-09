@@ -1,7 +1,7 @@
 import '../../../domain.dart';
 
-class GetConnectivityStatusUseCase extends UseCase<NoParams, bool> {
-  GetConnectivityStatusUseCase(this._connectivityService);
+class GetConnectionStatusUseCase extends UseCase<NoParams, bool> {
+  GetConnectionStatusUseCase(this._connectivityService);
 
   final ConnectivityService _connectivityService;
 

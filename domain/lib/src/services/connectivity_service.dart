@@ -6,7 +6,7 @@ class ConnectivityService with ChangeNotifier {
     Connectivity().onConnectivityChanged.listen(
       (List<ConnectivityResult> result) {
         final isConnected = !result.contains(ConnectivityResult.none);
-        _updateConnection(isConnected);
+        if (isConnected != _connected) _updateConnection(isConnected);
       },
     );
   }
