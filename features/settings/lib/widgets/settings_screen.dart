@@ -1,7 +1,10 @@
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:navigation/navigation.dart';
+import '../bloc/settings_bloc.dart';
+import 'settings_options/dark_mode_option.dart';
 
 @RoutePage()
 class SettingsScreen extends StatelessWidget {
@@ -9,56 +12,28 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(LocaleKeys.settings_settings.tr()),
+    return BlocProvider(
+      create: (context) => SettingsBloc(
+        service: appLocator.get<ThemeService>(),
+        getDarkModeUseCase: appLocator.get<GetThemeModeUseCase>(),
+        toggleDarkModeUseCase: appLocator.get<ChangeThemeModeUseCase>(),
       ),
-      body: Container(
-        margin: const EdgeInsets.all(4),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: context.colorScheme.surfaceContainer,
-          borderRadius: BorderRadius.circular(10),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(LocaleKeys.settings_settings.tr()),
         ),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  LocaleKeys.settings_dark_mode.tr(),
-                  style: context.textTheme.labelMedium!
-                      .copyWith(color: context.colorScheme.onSurface),
-                ),
-                const _ThemeSwitcher(),
-              ],
-            ),
-          ],
+        body: Container(
+          margin: const EdgeInsets.all(4),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: context.colorScheme.surfaceContainer,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: const Column(
+            children: [DarkModeOption()],
+          ),
         ),
       ),
-    );
-  }
-}
-
-class _ThemeSwitcher extends StatelessWidget {
-  const _ThemeSwitcher();
-
-  @override
-  Widget build(BuildContext context) {
-    final getThemeUseCase = appLocator.get<GetThemeModeUseCase>();
-    final changeThemeUseCase = appLocator.get<ChangeThemeModeUseCase>();
-
-    return ListenableBuilder(
-      listenable: appLocator.get<ThemeService>(),
-      builder: (context, child) {
-        return Switch(
-          value: getThemeUseCase.execute() == ThemeMode.dark,
-          onChanged: (bool active) {
-            changeThemeUseCase
-                .execute(active ? ThemeMode.dark : ThemeMode.light);
-          },
-        );
-      },
     );
   }
 }

@@ -20,6 +20,9 @@ dependencies:
   navigation:
     path: ../../navigation
 
+  equatable: ^2.0.7
+  flutter_bloc: ^8.1.6
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
