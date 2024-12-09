@@ -45,14 +45,16 @@ class _ThemeSwitcher extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ThemeMode>(
-      stream: appLocator.get<GetThemeModeStreamUseCase>().execute(),
-      builder: (context, snapshot) {
+    final getThemeUseCase = appLocator.get<GetThemeModeUseCase>();
+    final changeThemeUseCase = appLocator.get<ChangeThemeModeUseCase>();
+
+    return ListenableBuilder(
+      listenable: appLocator.get<ThemeService>(),
+      builder: (context, child) {
         return Switch(
-          value: snapshot.data == ThemeMode.dark,
+          value: getThemeUseCase.execute() == ThemeMode.dark,
           onChanged: (bool active) {
-            appLocator
-                .get<ChangeThemeModeUseCase>()
+            changeThemeUseCase
                 .execute(active ? ThemeMode.dark : ThemeMode.light);
           },
         );

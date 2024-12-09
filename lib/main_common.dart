@@ -37,9 +37,9 @@ class App extends StatelessWidget {
       path: AppLocalization.langFolderPath,
       supportedLocales: AppLocalization.supportedLocales,
       fallbackLocale: AppLocalization.fallbackLocale,
-      child: StreamBuilder<ThemeMode>(
-        stream: appLocator.get<GetThemeModeStreamUseCase>().execute(),
-        builder: (context, snapshot) {
+      child: ListenableBuilder(
+        listenable: appLocator.get<ThemeService>(),
+        builder: (context, child) {
           return MaterialApp.router(
             debugShowCheckedModeBanner: false,
             routerConfig: appRouter.config(),
@@ -48,7 +48,7 @@ class App extends StatelessWidget {
             locale: context.locale,
             theme: AppTheme.light,
             darkTheme: AppTheme.dark,
-            themeMode: snapshot.data,
+            themeMode: appLocator.get<GetThemeModeUseCase>().execute(),
           );
         },
       ),

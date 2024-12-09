@@ -4,7 +4,7 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ThemeService {
+class ThemeService with ChangeNotifier {
   ThemeService() {
     _init();
   }
@@ -17,20 +17,20 @@ class ThemeService {
         ? ThemeMode.system
         : _themeModeFromString(savedTheme);
 
-    _controller = StreamController<ThemeMode>.broadcast(
-      onListen: () => _controller.add(theme),
-    );
+    _themeMode = theme;
+    notifyListeners();
   }
 
   late final SharedPreferences _storage;
-  late final StreamController<ThemeMode> _controller;
+  late ThemeMode _themeMode;
 
-  Stream<ThemeMode> get themeStream => _controller.stream;
+  ThemeMode get themeMode => _themeMode;
 
   Future<void> changeTheme(ThemeMode themeMode) async {
     try {
       await _storage.setString(SharedPreferencesKeys.theme, themeMode.name);
-      _controller.add(themeMode);
+      _themeMode = themeMode;
+      notifyListeners();
     } catch (e) {
       AppLogger().error('Could not change app theme', e);
     }
