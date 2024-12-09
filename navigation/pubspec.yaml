@@ -21,6 +21,8 @@ dependencies:
     path: ../features/character_details
   settings:
     path: ../features/settings
+  home:
+    path: ../features/home
 
   auto_route: ^7.8.4
 
