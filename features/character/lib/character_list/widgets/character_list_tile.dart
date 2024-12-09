@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +108,7 @@ class _TileImage extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.horizontal(left: Radius.circular(24)),
         image: DecorationImage(
-          image: NetworkImage(imageUrl),
+          image: CachedNetworkImageProvider(imageUrl),
           fit: BoxFit.cover,
         ),
       ),
