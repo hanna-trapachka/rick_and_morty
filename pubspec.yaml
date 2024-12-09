@@ -20,8 +20,11 @@ dependencies:
     path: ./data
   navigation:
     path: ./navigation
+  home:
+    path: ./features/home
 
   cupertino_icons: ^1.0.8
+  flutter_bloc: ^8.1.6
 
 dev_dependencies:
   flutter_test:

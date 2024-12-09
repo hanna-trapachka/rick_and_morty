@@ -3,6 +3,8 @@ import 'package:core_ui/core_ui.dart';
 import 'package:data/data.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:home/home.dart';
 import 'package:navigation/navigation.dart';
 
 Future<void> mainCommon(Flavor flavor) async {
@@ -31,26 +33,31 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppRouter appRouter = appLocator<AppRouter>();
-
-    return EasyLocalization(
-      path: AppLocalization.langFolderPath,
-      supportedLocales: AppLocalization.supportedLocales,
-      fallbackLocale: AppLocalization.fallbackLocale,
-      child: ListenableBuilder(
-        listenable: appLocator.get<ThemeService>(),
-        builder: (context, child) {
-          return MaterialApp.router(
-            debugShowCheckedModeBanner: false,
-            routerConfig: appRouter.config(),
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            theme: AppTheme.light,
-            darkTheme: AppTheme.dark,
-            themeMode: appLocator.get<GetThemeModeUseCase>().execute(),
-          );
-        },
+    return BlocProvider(
+      create: (context) => HomeBloc(
+        router: appLocator<AppRouter>(),
+        themeService: appLocator<ThemeService>(),
+        connectivityService: appLocator<ConnectivityService>(),
+        getThemeMode: appLocator<GetThemeModeUseCase>(),
+      ),
+      child: EasyLocalization(
+        path: AppLocalization.langFolderPath,
+        supportedLocales: AppLocalization.supportedLocales,
+        fallbackLocale: AppLocalization.fallbackLocale,
+        child: BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            return MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              routerConfig: context.read<HomeBloc>().routerConfig,
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+              theme: AppTheme.light,
+              darkTheme: AppTheme.dark,
+              themeMode: state.themeMode,
+            );
+          },
+        ),
       ),
     );
   }
