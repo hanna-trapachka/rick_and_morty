@@ -36,8 +36,7 @@ class App extends StatelessWidget {
     return BlocProvider(
       create: (context) => HomeBloc(
         router: appLocator<AppRouter>(),
-        connectivityService: appLocator<ConnectivityService>(),
-        getThemeMode: appLocator<ListenThemeModeChangesUseCase>(),
+        getThemeMode: appLocator<ListenThemeModeUseCase>(),
         getConnectivityStatus: appLocator<GetConnectionStatusUseCase>(),
       ),
       child: EasyLocalization(

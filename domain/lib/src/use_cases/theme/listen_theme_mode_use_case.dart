@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import '../../services/theme_service.dart';
 import '../use_cases.dart';
 
-class ListenThemeModeChangesUseCase
-    extends UseCase<Function(ThemeMode), ThemeMode> {
-  ListenThemeModeChangesUseCase(this.themeService);
+class ListenThemeModeUseCase extends UseCase<Function(ThemeMode), ThemeMode> {
+  ListenThemeModeUseCase(this.themeService);
 
   final ThemeService themeService;
 

@@ -21,5 +21,10 @@ final class _ThemeModeChanged extends HomeEvent {
 }
 
 final class _ConnectionStatusChanged extends HomeEvent {
-  const _ConnectionStatusChanged();
+  const _ConnectionStatusChanged({required this.connected});
+
+  final bool connected;
+
+  @override
+  List<Object?> get props => [connected];
 }

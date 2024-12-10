@@ -22,8 +22,8 @@ abstract class DomainDI {
     );
 
     // Theme
-    locator.registerSingleton<ListenThemeModeChangesUseCase>(
-      ListenThemeModeChangesUseCase(locator.get<ThemeService>()),
+    locator.registerSingleton<ListenThemeModeUseCase>(
+      ListenThemeModeUseCase(locator.get<ThemeService>()),
     );
     locator.registerSingleton<ChangeThemeModeUseCase>(
       ChangeThemeModeUseCase(locator.get<ThemeService>()),
@@ -34,7 +34,7 @@ abstract class DomainDI {
       GetCharacterListUseCase(
         characterRepository: locator.get<CharacterRepository>(),
         characterRepositoryLocal: locator.get<CharacterRepositoryLocal>(),
-        getConnectivityStatusUseCase: locator.get<GetConnectionStatusUseCase>(),
+        connectivityService: locator.get<ConnectivityService>(),
       ),
     );
     locator.registerSingleton<GetCharacterDetailsUseCase>(

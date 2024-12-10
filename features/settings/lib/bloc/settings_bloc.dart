@@ -8,7 +8,7 @@ part 'settings_event.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc({
-    required ListenThemeModeChangesUseCase getDarkModeUseCase,
+    required ListenThemeModeUseCase getDarkModeUseCase,
     required ChangeThemeModeUseCase toggleDarkModeUseCase,
   })  : _getDarkMode = getDarkModeUseCase,
         _changeThemeModeUseCase = toggleDarkModeUseCase,
@@ -24,7 +24,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     add(const _SettingsInit());
   }
 
-  final ListenThemeModeChangesUseCase _getDarkMode;
+  final ListenThemeModeUseCase _getDarkMode;
   final ChangeThemeModeUseCase _changeThemeModeUseCase;
 
   void _init(_SettingsInit event, Emitter<SettingsState> emit) {

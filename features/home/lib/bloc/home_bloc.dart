@@ -12,13 +12,11 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc({
     required AppRouter router,
-    required ConnectivityService connectivityService,
-    required ListenThemeModeChangesUseCase getThemeMode,
+    required ListenThemeModeUseCase getThemeMode,
     required GetConnectionStatusUseCase getConnectivityStatus,
   })  : _router = router,
-        _connectivityService = connectivityService,
-        _getThemeMode = getThemeMode,
-        _getConnectivityStatus = getConnectivityStatus,
+        _listenThemeMode = getThemeMode,
+        _listenConnectionStatus = getConnectivityStatus,
         super(const HomeState()) {
     on<HomeEvent>(
       (event, emit) => switch (event) {
@@ -29,26 +27,26 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       },
     );
 
-    _connectivityService.addListener(_connectivityListener);
-
     add(const _HomeInit());
   }
 
   final AppRouter _router;
-  final ConnectivityService _connectivityService;
-  final ListenThemeModeChangesUseCase _getThemeMode;
-  final GetConnectionStatusUseCase _getConnectivityStatus;
+  final ListenThemeModeUseCase _listenThemeMode;
+  final GetConnectionStatusUseCase _listenConnectionStatus;
 
   RouterConfig<UrlState> get routerConfig => _router.config();
 
   void _init(_HomeInit event, Emitter<HomeState> emit) {
-    final themeMode = _getThemeMode.execute(_themeModeListener);
+    final themeMode = _listenThemeMode.execute(_themeModeListener);
+    _listenConnectionStatus.execute(_connectivityListener);
 
     emit(state.copyWith(themeMode: themeMode));
   }
 
   void _themeModeListener(ThemeMode mode) => add(_ThemeModeChanged(mode));
-  void _connectivityListener() => add(const _ConnectionStatusChanged());
+  void _connectivityListener({required bool connected}) => add(
+        _ConnectionStatusChanged(connected: connected),
+      );
 
   void _handleThemeModeChange(
     _ThemeModeChanged event,
@@ -61,9 +59,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     _ConnectionStatusChanged event,
     Emitter<HomeState> emit,
   ) async {
-    final connected = _getConnectivityStatus.execute();
-
-    if (connected) {
+    if (event.connected) {
       if (_router.current.name == NoConnectionRoute.name) {
         await _router.maybePop();
       }
@@ -71,12 +67,5 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
     await _router.push(const NoConnectionRoute());
-  }
-
-  @override
-  Future<void> close() {
-    _connectivityService.removeListener(_connectivityListener);
-
-    return super.close();
   }
 }
