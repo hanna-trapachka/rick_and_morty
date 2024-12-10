@@ -44,6 +44,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void _themeModeListener(ThemeMode mode) => add(_ThemeModeChanged(mode));
+
   void _connectivityListener({required bool connected}) => add(
         _ConnectionStatusChanged(connected: connected),
       );

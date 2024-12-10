@@ -1,8 +1,5 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../bloc/settings_bloc.dart';
 
 class DarkModeOption extends StatelessWidget {
   const DarkModeOption({
@@ -25,14 +22,7 @@ class DarkModeOption extends StatelessWidget {
             color: context.colorScheme.onSurface,
           ),
         ),
-        BlocBuilder<SettingsBloc, SettingsState>(
-          builder: (context, state) {
-            return Switch(
-              value: state.darkMode,
-              onChanged: onChanged,
-            );
-          },
-        ),
+        Switch(value: value, onChanged: onChanged),
       ],
     );
   }

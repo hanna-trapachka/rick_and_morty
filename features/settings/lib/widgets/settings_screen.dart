@@ -39,7 +39,7 @@ class SettingsScreen extends StatelessWidget {
                         .add(SettingsEvent.toggleDarkMode(active: active)),
                   );
                 },
-              )
+              ),
             ],
           ),
         ),

@@ -1,7 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+
+import 'character_list_tile_image.dart';
 
 class CharacterListTile extends StatelessWidget {
   const CharacterListTile(
@@ -29,7 +30,7 @@ class CharacterListTile extends StatelessWidget {
         ),
         child: Row(
           children: [
-            _TileImage(imageUrl: character.image),
+            TileImage(imageUrl: character.image),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8),
@@ -90,26 +91,6 @@ class CharacterListTile extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _TileImage extends StatelessWidget {
-  const _TileImage({required this.imageUrl});
-
-  final String imageUrl;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 150,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.horizontal(left: Radius.circular(24)),
-        image: DecorationImage(
-          image: CachedNetworkImageProvider(imageUrl),
-          fit: BoxFit.cover,
         ),
       ),
     );
