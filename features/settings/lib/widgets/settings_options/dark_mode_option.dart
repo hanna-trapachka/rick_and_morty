@@ -5,7 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/settings_bloc.dart';
 
 class DarkModeOption extends StatelessWidget {
-  const DarkModeOption({super.key});
+  const DarkModeOption({
+    required this.value,
+    required this.onChanged,
+    super.key,
+  });
+
+  final bool value;
+  final ValueChanged<bool> onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +29,7 @@ class DarkModeOption extends StatelessWidget {
           builder: (context, state) {
             return Switch(
               value: state.darkMode,
-              onChanged: (active) => context
-                  .read<SettingsBloc>()
-                  .add(SettingsEvent.toggleDarkMode(active: active)),
+              onChanged: onChanged,
             );
           },
         ),

@@ -28,8 +28,19 @@ class SettingsScreen extends StatelessWidget {
             color: context.colorScheme.surfaceContainer,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: const Column(
-            children: [DarkModeOption()],
+          child: Column(
+            children: [
+              BlocBuilder<SettingsBloc, SettingsState>(
+                builder: (context, state) {
+                  return DarkModeOption(
+                    value: state.darkMode,
+                    onChanged: (active) => context
+                        .read<SettingsBloc>()
+                        .add(SettingsEvent.toggleDarkMode(active: active)),
+                  );
+                },
+              )
+            ],
           ),
         ),
       ),
