@@ -8,8 +8,7 @@ part 'settings_event.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc({
-    required this.service,
-    required GetThemeModeUseCase getDarkModeUseCase,
+    required ListenThemeModeChangesUseCase getDarkModeUseCase,
     required ChangeThemeModeUseCase toggleDarkModeUseCase,
   })  : _getDarkMode = getDarkModeUseCase,
         _changeThemeModeUseCase = toggleDarkModeUseCase,
@@ -18,25 +17,23 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       (event, emit) => switch (event) {
         final _SettingsInit e => _init(e, emit),
         final _DarkModeToggled e => _toggleDarkMode(e, emit),
-        final _DarkModeChangesHandled e => _handleDarkModeChange(e, emit),
+        final _ThemeModeChanged e => _handleDarkModeChange(e, emit),
       },
     );
 
-    service.addListener(() => add(const _DarkModeChangesHandled()));
-
     add(const _SettingsInit());
   }
-  final ThemeService service;
-  final GetThemeModeUseCase _getDarkMode;
+
+  final ListenThemeModeChangesUseCase _getDarkMode;
   final ChangeThemeModeUseCase _changeThemeModeUseCase;
 
   void _init(_SettingsInit event, Emitter<SettingsState> emit) {
-    final mode = _getDarkMode.execute();
+    final mode = _getDarkMode.execute(_themeModeListener);
 
     emit(state.copyWith(darkMode: _isDarkMode(mode)));
   }
 
-  void _themeModeListener() => add(const _DarkModeChangesHandled());
+  void _themeModeListener(ThemeMode mode) => add(_ThemeModeChanged(mode));
 
   bool _isDarkMode(ThemeMode mode) => mode == ThemeMode.dark;
 
@@ -49,15 +46,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   Future<void> _handleDarkModeChange(
-    _DarkModeChangesHandled event,
+    _ThemeModeChanged event,
     Emitter<SettingsState> emit,
   ) async {
-    emit(state.copyWith(darkMode: _isDarkMode(_getDarkMode.execute())));
-  }
-
-  @override
-  Future<void> close() {
-    service.removeListener(_themeModeListener);
-    return super.close();
+    emit(state.copyWith(darkMode: _isDarkMode(event.mode)));
   }
 }

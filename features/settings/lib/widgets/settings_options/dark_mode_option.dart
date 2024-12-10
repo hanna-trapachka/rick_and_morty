@@ -14,8 +14,9 @@ class DarkModeOption extends StatelessWidget {
       children: [
         Text(
           LocaleKeys.settings_dark_mode.tr(),
-          style: context.textTheme.labelMedium!
-              .copyWith(color: context.colorScheme.onSurface),
+          style: context.textTheme.labelMedium!.copyWith(
+            color: context.colorScheme.onSurface,
+          ),
         ),
         BlocBuilder<SettingsBloc, SettingsState>(
           builder: (context, state) {

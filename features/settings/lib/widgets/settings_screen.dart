@@ -14,8 +14,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SettingsBloc(
-        service: appLocator.get<ThemeService>(),
-        getDarkModeUseCase: appLocator.get<GetThemeModeUseCase>(),
+        getDarkModeUseCase: appLocator.get<ListenThemeModeChangesUseCase>(),
         toggleDarkModeUseCase: appLocator.get<ChangeThemeModeUseCase>(),
       ),
       child: Scaffold(

@@ -23,6 +23,11 @@ final class _DarkModeToggled extends SettingsEvent {
   List<Object?> get props => [active];
 }
 
-final class _DarkModeChangesHandled extends SettingsEvent {
-  const _DarkModeChangesHandled();
+final class _ThemeModeChanged extends SettingsEvent {
+  const _ThemeModeChanged(this.mode);
+
+  final ThemeMode mode;
+
+  @override
+  List<Object?> get props => [mode];
 }

@@ -22,8 +22,8 @@ abstract class DomainDI {
     );
 
     // Theme
-    locator.registerSingleton<GetThemeModeUseCase>(
-      GetThemeModeUseCase(locator.get<ThemeService>()),
+    locator.registerSingleton<ListenThemeModeChangesUseCase>(
+      ListenThemeModeChangesUseCase(locator.get<ThemeService>()),
     );
     locator.registerSingleton<ChangeThemeModeUseCase>(
       ChangeThemeModeUseCase(locator.get<ThemeService>()),

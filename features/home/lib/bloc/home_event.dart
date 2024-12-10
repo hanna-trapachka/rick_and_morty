@@ -11,8 +11,13 @@ final class _HomeInit extends HomeEvent {
   const _HomeInit();
 }
 
-final class _ThemeModChanged extends HomeEvent {
-  const _ThemeModChanged();
+final class _ThemeModeChanged extends HomeEvent {
+  const _ThemeModeChanged(this.mode);
+
+  final ThemeMode mode;
+
+  @override
+  List<Object?> get props => [mode];
 }
 
 final class _ConnectionStatusChanged extends HomeEvent {
