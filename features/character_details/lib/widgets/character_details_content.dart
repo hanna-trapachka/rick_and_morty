@@ -42,14 +42,14 @@ class CharacterDetailsContent extends StatelessWidget {
           style: labelTextStyle,
         ),
         const SizedBox(height: 4),
-        Text(character.species.localize(), style: bodyTextStyle),
+        Text(character.location.name, style: bodyTextStyle),
         const SizedBox(height: 8),
         Text(
           LocaleKeys.character_details_first_seeing_in.tr(),
           style: labelTextStyle,
         ),
         const SizedBox(height: 4),
-        Text(character.species.localize(), style: bodyTextStyle),
+        Text(character.origin.name, style: bodyTextStyle),
       ],
     );
   }
