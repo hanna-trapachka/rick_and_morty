@@ -1,4 +1,4 @@
-import 'location.dart';
+import '../../../domain.dart';
 
 class CharacterDetails {
   const CharacterDetails({
@@ -16,8 +16,8 @@ class CharacterDetails {
 
   final int id;
   final String name;
-  final String status;
-  final String species;
+  final CharacterStatus status;
+  final CharacterSpecies species;
   final String type;
   final String gender;
   final Location location;

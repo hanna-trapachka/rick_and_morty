@@ -1,6 +1,6 @@
 {
-  "general" : {
-    "all" : "All",
+  "general": {
+    "all": "All",
     "check_connectivity": "Please check your internet connection and try again",
     "something_went_wrong": "Something went wrong",
     "try_again": "Try again"
@@ -18,11 +18,17 @@
     "characters": "Characters",
     "last_location": "Last known location:",
     "first_seeing_in": "First seeing in:",
-    "details": "Character Details",
     "status_alive": "Alive",
     "status_dead": "Dead",
     "status_unknown": "Unknown",
     "species_alien": "Alien",
     "species_human": "Human"
+  },
+  "character_details": {
+    "details": "Character Details",
+    "last_location": "Last known location:",
+    "first_seeing_in": "First seeing in:",
+    "status": "Status",
+    "species": "Species"
   }
 }

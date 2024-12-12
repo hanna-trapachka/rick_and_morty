@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:navigation/navigation.dart';
 
 import '../bloc/character_details_bloc.dart';
+import 'character_details_content.dart';
 
 @RoutePage()
 class CharacterDetailsScreen extends StatelessWidget {
@@ -25,7 +26,7 @@ class CharacterDetailsScreen extends StatelessWidget {
             onPressed: context.maybePop,
             child: const Icon(Icons.arrow_back),
           ),
-          title: Text(LocaleKeys.character_details.tr()),
+          title: Text(LocaleKeys.character_details_details.tr()),
         ),
         body: BlocBuilder<CharacterDetailsBloc, CharacterDetailsState>(
           builder: (context, state) {
@@ -35,33 +36,7 @@ class CharacterDetailsScreen extends StatelessWidget {
               case CharacterDetailsError(:final error):
                 return ErrorContainer(error);
               case CharacterDetailsIdle(:final character):
-                return ListView(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      height: 250,
-                      decoration: BoxDecoration(
-                        color: context.colorScheme.secondaryContainer,
-                        image: DecorationImage(
-                          image: NetworkImage(character.image),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      character.name,
-                      style: context.textTheme.displaySmall!
-                          .copyWith(color: context.colorScheme.onSurface),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Other details.....',
-                      style: context.textTheme.bodyMedium!
-                          .copyWith(color: context.colorScheme.onSurface),
-                    ),
-                  ],
-                );
+                return CharacterDetailsContent(character);
             }
           },
         ),

@@ -8,8 +8,10 @@ abstract class CharacterDetailsMapper {
       CharacterDetails(
         id: entity.id,
         name: entity.name,
-        status: entity.status,
-        species: entity.species,
+        status: CharacterStatus.fromString(entity.status) ??
+            CharacterStatus.unknown,
+        species: CharacterSpecies.fromString(entity.species) ??
+            CharacterSpecies.human,
         type: entity.type,
         gender: entity.gender,
         location: LocationMapper.fromEntity(entity.location),
