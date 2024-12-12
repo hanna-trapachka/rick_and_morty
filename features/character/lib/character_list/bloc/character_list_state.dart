@@ -11,8 +11,8 @@ sealed class CharacterListState extends Equatable {
   List<Object?> get props => [query];
 }
 
-final class CharacterListFreshLoading extends CharacterListState {
-  const CharacterListFreshLoading({super.query});
+final class CharacterListLoading extends CharacterListState {
+  const CharacterListLoading({super.query});
 
   @override
   List<Object?> get props => [query];

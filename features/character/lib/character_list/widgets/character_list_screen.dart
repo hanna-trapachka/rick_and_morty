@@ -23,36 +23,26 @@ class CharacterListScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(LocaleKeys.character_characters.tr()),
         ),
-        body: BlocBuilder<CharacterListBloc, CharacterListState>(
-          builder: (context, state) {
-            return RefreshIndicator(
-              onRefresh: () async => context
-                  .read<CharacterListBloc>()
-                  .add(CharacterListEvent.fetch(refresh: true)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const CharacterFilters(),
-                  BlocBuilder<CharacterListBloc, CharacterListState>(
-                    builder: (context, state) {
-                      return switch (state) {
-                        CharacterListFreshLoading() => const Expanded(
-                            child: Center(child: AppLoadingAnimation()),
-                          ),
-                        CharacterListError(:final error) =>
-                          ErrorContainer(error),
-                        CharacterListIdle(:final data, :final hasReachedMax) =>
-                          CharacterListContent(
-                            data: data,
-                            hasReachedMax: hasReachedMax,
-                          ),
-                      };
-                    },
-                  ),
-                ],
-              ),
-            );
-          },
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const CharacterFilters(),
+            BlocBuilder<CharacterListBloc, CharacterListState>(
+              builder: (context, state) {
+                return switch (state) {
+                  CharacterListLoading() => const Expanded(
+                      child: Center(child: AppLoadingAnimation()),
+                    ),
+                  CharacterListError(:final error) => ErrorContainer(error),
+                  CharacterListIdle(:final data, :final hasReachedMax) =>
+                    CharacterListContent(
+                      data: data,
+                      hasReachedMax: hasReachedMax,
+                    ),
+                };
+              },
+            ),
+          ],
         ),
       ),
     );

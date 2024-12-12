@@ -11,7 +11,7 @@ class AppDropdownButton extends StatelessWidget {
   });
 
   final List<String> values;
-  final void Function(String) onSelected;
+  final void Function(String?) onSelected;
   final String? selectedValue;
   final bool hasAllValue;
 
@@ -26,6 +26,7 @@ class AppDropdownButton extends StatelessWidget {
       value: selectedValue ?? valuesString.first,
       icon: const Icon(Icons.arrow_downward),
       onChanged: (String? value) {
+        if (value == LocaleKeys.general_all.tr()) onSelected(null);
         if (value != null) onSelected(value);
       },
       items: valuesString.map<DropdownMenuItem<String>>((String value) {

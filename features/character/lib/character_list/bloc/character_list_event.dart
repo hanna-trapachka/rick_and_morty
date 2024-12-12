@@ -3,16 +3,14 @@ part of 'character_list_bloc.dart';
 sealed class CharacterListEvent extends Equatable {
   const CharacterListEvent();
 
-  factory CharacterListEvent.fetch({
-    CharacterSpecies? species,
-    CharacterStatus? status,
-    bool refresh = false,
-  }) =>
-      _CharacterListFetched(
-        species: species,
-        status: status,
-        refresh: refresh,
-      );
+  factory CharacterListEvent.fetch({bool refresh = false}) =>
+      _CharacterListFetched(refresh: refresh);
+
+  factory CharacterListEvent.filterBySpecies(String? species) =>
+      _CharacterBySpeciesFiltered(species);
+
+  factory CharacterListEvent.filterByStatus(String? status) =>
+      _CharacterByStatusFiltered(status);
 
   @override
   List<Object?> get props => [];
@@ -20,15 +18,29 @@ sealed class CharacterListEvent extends Equatable {
 
 final class _CharacterListFetched extends CharacterListEvent {
   const _CharacterListFetched({
-    this.species,
-    this.status,
     required this.refresh,
   });
 
-  final CharacterSpecies? species;
-  final CharacterStatus? status;
   final bool refresh;
 
   @override
-  List<Object?> get props => [species, status, refresh];
+  List<Object?> get props => [refresh];
+}
+
+final class _CharacterByStatusFiltered extends CharacterListEvent {
+  const _CharacterByStatusFiltered(this.status);
+
+  final String? status;
+
+  @override
+  List<Object?> get props => [status];
+}
+
+final class _CharacterBySpeciesFiltered extends CharacterListEvent {
+  const _CharacterBySpeciesFiltered(this.species);
+
+  final String? species;
+
+  @override
+  List<Object?> get props => [species];
 }
