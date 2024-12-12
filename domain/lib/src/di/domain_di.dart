@@ -12,7 +12,9 @@ abstract class DomainDI {
 
   static void _initServices(GetIt locator) {
     locator.registerSingleton<ConnectivityService>(ConnectivityService());
-    locator.registerSingleton<ThemeService>(ThemeService());
+    locator.registerSingleton<ThemeService>(
+      ThemeService(storage: appLocator.get<LocalStorageRepository>()),
+    );
   }
 
   static void _initUseCases(GetIt locator) {

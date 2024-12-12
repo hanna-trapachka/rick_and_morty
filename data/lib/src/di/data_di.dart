@@ -36,6 +36,9 @@ abstract class DataDI {
   }
 
   static void _initRepositories(GetIt locator) {
+    locator.registerSingleton<LocalStorageRepository>(
+      LocalStorageRepositoryImpl(),
+    );
     locator.registerLazySingleton<CharacterRepository>(
       () => CharacterRepositoryImpl(
         characterProvider: locator<CharacterProvider>(),

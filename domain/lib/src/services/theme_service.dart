@@ -2,22 +2,21 @@ import 'dart:async';
 
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../domain.dart';
 
 class ThemeService with ChangeNotifier {
-  ThemeService() {
+  ThemeService({required LocalStorageRepository storage}) : _storage = storage {
     _init();
   }
 
-  late final SharedPreferences _storage;
+  final LocalStorageRepository _storage;
   late ThemeMode _themeMode;
 
   ThemeMode get themeMode => _themeMode;
 
   Future<void> _init() async {
-    _storage = await SharedPreferences.getInstance();
-
-    final savedTheme = _storage.getString(SharedPreferencesKeys.theme);
+    final savedTheme = await _storage.read<String>(SharedPreferencesKeys.theme);
     final theme = savedTheme == null
         ? ThemeMode.system
         : _themeModeFromString(savedTheme);
@@ -37,7 +36,7 @@ class ThemeService with ChangeNotifier {
 
   Future<void> changeTheme(ThemeMode themeMode) async {
     try {
-      await _storage.setString(SharedPreferencesKeys.theme, themeMode.name);
+      await _storage.write<String>(SharedPreferencesKeys.theme, themeMode.name);
       _themeMode = themeMode;
       notifyListeners();
     } catch (e) {

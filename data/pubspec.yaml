@@ -16,6 +16,7 @@ dependencies:
     path: ../domain
   json_annotation: ^4.9.0
   sqflite: ^2.4.1
+  shared_preferences: ^2.3.3
 
 dev_dependencies:
   flutter_test:
